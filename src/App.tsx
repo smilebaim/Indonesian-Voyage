@@ -480,9 +480,9 @@ export default function App() {
           {hasClickedMarker && (
             <section 
               id="info-panel" 
-              className="absolute inset-0 z-[402] overflow-y-auto animate-fadeIn bg-transparent"
+              className="absolute inset-0 z-[402] overflow-y-auto p-3 sm:p-6 lg:p-8 animate-fadeIn bg-black/40 backdrop-blur-sm flex items-start justify-center"
             >
-              <div className={`w-full min-h-full backdrop-blur-3xl overflow-hidden flex flex-col transition-all duration-300 ${theme === "dark" ? "bg-black/90 shadow-[0_12px_40px_0_rgba(0,0,0,0.5)]" : "bg-white/95 shadow-[0_8px_32px_0_rgba(31,38,135,0.08)]"}`}>
+              <div className={`w-full max-w-3xl backdrop-blur-xl border rounded-3xl overflow-hidden flex flex-col transition-all duration-300 ${theme === "dark" ? "bg-slate-950/40 border-white/15 shadow-[0_12px_40px_0_rgba(0,0,0,0.5)]" : "bg-white/40 border-white/30 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"}`}>
           
                 {/* Selected Province Hero Details */}
                 <div className={`p-4 sm:p-5 md:p-6 relative overflow-hidden flex flex-col justify-between group transition-all duration-300 border-b ${theme === "dark" ? "border-white/10" : "border-slate-200/80"}`}>
@@ -1466,19 +1466,19 @@ export default function App() {
                       )}
                     </div>
 
-                    <div className="relative w-full md:w-48">
-                      <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-400"}`} />
+                    <div className="relative w-24 sm:w-32 md:w-36">
+                      <Search className={`absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-400"}`} />
                       <input
                         type="text"
-                        placeholder={language === "en" ? "Search province..." : "Cari provinsi..."}
+                        placeholder={language === "en" ? "Search..." : "Cari..."}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className={`w-full pl-9 pr-4 py-1.5 rounded-full text-xs transition-all duration-300 focus:outline-none focus:border-blue-500 ${theme === "dark" ? "bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:bg-white/10" : "bg-transparent border border-slate-200 text-slate-800 placeholder-slate-400 focus:bg-transparent"}`}
+                        className={`w-full pl-7.5 pr-3 py-1 rounded-full text-[11px] transition-all duration-300 focus:outline-none focus:border-blue-500 ${theme === "dark" ? "bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:bg-white/10" : "bg-transparent border border-slate-200 text-slate-800 placeholder-slate-400 focus:bg-transparent"}`}
                       />
                       {searchQuery && (
                         <button 
                           onClick={() => setSearchQuery("")} 
-                          className={`absolute right-3 top-1/2 -translate-y-1/2 transition-colors ${theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-400 hover:text-slate-700"}`}
+                          className={`absolute right-2.5 top-1/2 -translate-y-1/2 transition-colors ${theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-400 hover:text-slate-700"}`}
                         >
                           <X className="w-3 h-3" />
                         </button>
