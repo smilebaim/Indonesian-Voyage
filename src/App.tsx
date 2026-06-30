@@ -482,7 +482,7 @@ export default function App() {
               id="info-panel" 
               className="absolute inset-0 z-[402] overflow-y-auto p-3 sm:p-6 lg:p-8 animate-fadeIn bg-black/40 backdrop-blur-sm flex items-start justify-center"
             >
-              <div className={`w-full max-w-3xl backdrop-blur-xl border rounded-3xl overflow-hidden flex flex-col transition-all duration-300 ${theme === "dark" ? "bg-slate-950/40 border-white/15 shadow-[0_12px_40px_0_rgba(0,0,0,0.5)]" : "bg-white/40 border-white/30 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"}`}>
+              <div className={`my-auto w-full max-w-3xl backdrop-blur-xl border rounded-3xl overflow-hidden flex flex-col transition-all duration-300 ${theme === "dark" ? "bg-slate-950/40 border-white/15 shadow-[0_12px_40px_0_rgba(0,0,0,0.5)]" : "bg-white/40 border-white/30 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"}`}>
           
                 {/* Selected Province Hero Details */}
                 <div className={`p-4 sm:p-5 md:p-6 relative overflow-hidden flex flex-col justify-between group transition-all duration-300 border-b ${theme === "dark" ? "border-white/10" : "border-slate-200/80"}`}>
@@ -516,53 +516,24 @@ export default function App() {
                 </div>
                 
                 {/* Close Button & Visual Circle Progress / Stats Badge */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <button
                     onClick={() => setHasClickedMarker(false)}
-                    className="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl border transition-all cursor-pointer bg-gradient-to-r from-rose-500 to-red-600 text-white border-transparent hover:brightness-110 hover:scale-105 active:scale-95 shadow-lg shadow-red-500/25"
+                    className="p-1.5 sm:p-2.5 rounded-lg sm:rounded-2xl border transition-all cursor-pointer bg-gradient-to-r from-rose-500 to-red-600 text-white border-transparent hover:brightness-110 hover:scale-105 active:scale-95 shadow-lg shadow-red-500/25"
                     title={language === "en" ? "Close Details" : "Tutup Detail"}
                   >
-                    <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
+                    <X className="w-3 h-3 sm:w-4 sm:h-4 stroke-[2.5]" />
                   </button>
                   <div 
-                    className={`w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center border shrink-0 transition-all ${theme === "dark" ? "border-white/10 bg-white/5" : "border-white/20 bg-transparent"}`}
+                    className={`w-8 h-8 sm:w-14 sm:h-14 rounded-lg sm:rounded-2xl flex flex-col items-center justify-center border shrink-0 transition-all ${theme === "dark" ? "border-white/10 bg-white/5" : "border-white/20 bg-transparent"}`}
                     style={{ borderColor: `${selectedProvince.color}40` }}
                   >
-                    <Compass className={`w-4 h-4 sm:w-5 sm:h-5 mb-0.5 text-blue-500 ${effectsEnabled ? "animate-spin-slow" : ""}`} />
-                    <span className={`text-[7px] sm:text-[8px] font-bold uppercase font-mono transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
+                    <Compass className={`w-3.5 h-3.5 sm:w-5 sm:h-5 mb-0.5 text-blue-500 ${effectsEnabled ? "animate-spin-slow" : ""}`} />
+                    <span className={`text-[6px] sm:text-[8px] font-bold uppercase font-mono transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
                       {selectedProvince.coords.x}° E
                     </span>
                   </div>
                 </div>
-              </div>
-
-              {/* General Description */}
-              <p className={`text-xs sm:text-sm mt-3.5 sm:mt-5 leading-relaxed font-light transition-colors ${theme === "dark" ? "text-gray-300" : "text-slate-600"}`}>
-                {selectedProvince.description}
-              </p>
-
-              {/* Real-time Weather Display */}
-              <div className="mt-3.5 sm:mt-5">
-                <WeatherWidget province={selectedProvince} language={language} theme={theme} />
-              </div>
-            </div>
-            {/* Micro Quick Statistics Grid */}
-            <div className={`grid grid-cols-2 gap-2 sm:gap-3 mt-4 pt-4 md:mt-6 md:pt-5 border-t ${theme === "dark" ? "border-white/10" : "border-white/20"}`}>
-              <div className={`backdrop-blur-md border p-2.5 sm:p-3 rounded-2xl transition-all duration-300 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-white/10 border-white/20 shadow-[0_4px_12px_rgba(31,38,135,0.02)]"}`}>
-                <span className={`text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider block mb-0.5 ${theme === "dark" ? "text-gray-500" : "text-slate-400"}`}>
-                  {language === "en" ? "Top Destinations" : "Destinasi Utama"}
-                </span>
-                <span className={`text-[11px] sm:text-xs font-medium line-clamp-1 transition-colors ${theme === "dark" ? "text-gray-200" : "text-slate-800"}`}>
-                  {selectedProvince.tourism[0]} & {selectedProvince.tourism[1]}
-                </span>
-              </div>
-              <div className={`backdrop-blur-md border p-2.5 sm:p-3 rounded-2xl transition-all duration-300 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-white/10 border-white/20 shadow-[0_4px_12px_rgba(31,38,135,0.02)]"}`}>
-                <span className={`text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider block mb-0.5 ${theme === "dark" ? "text-gray-500" : "text-slate-400"}`}>
-                  {language === "en" ? "Popular Culture" : "Budaya Populer"}
-                </span>
-                <span className={`text-[11px] sm:text-xs font-medium line-clamp-1 transition-colors ${theme === "dark" ? "text-gray-200" : "text-slate-800"}`}>
-                  {selectedProvince.culture[0]}
-                </span>
               </div>
             </div>
           </div>
@@ -570,21 +541,21 @@ export default function App() {
           {/* Interactive Information & AI Explorer Portal */}
           <div id="info-explorer" className="flex flex-col min-h-[300px] sm:min-h-[380px] md:min-h-[420px] overflow-hidden">
             {/* Inner Tabs for exploring details */}
-            <div className={`flex border-b p-1 sm:p-1.5 gap-1 overflow-x-auto scrollbar-none transition-all duration-300 ${theme === "dark" ? "border-white/10 bg-white/5" : "border-white/20 bg-white/10"}`}>
+            <div className={`flex flex-row flex-nowrap w-full border-b p-1 sm:p-1.5 gap-1 overflow-x-auto transition-all duration-300 ${theme === "dark" ? "border-white/10 bg-white/5" : "border-white/20 bg-white/10"}`}>
               <button
                 onClick={() => handleTabChange("overview")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                   activeTab === "overview" 
                     ? (theme === "dark" ? "bg-white/10 text-white" : "bg-slate-200/80 text-slate-800 shadow-sm") 
                     : (theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-500 hover:text-slate-800")
                 }`}
               >
                 <Info className="w-3.5 h-3.5 animate-[spin_10s_linear_infinite]" />
-                {language === "en" ? "Facts" : "Fakta"}
+                {language === "en" ? "Info" : "Info"}
               </button>
               <button
                 onClick={() => handleTabChange("history")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                   activeTab === "history" 
                     ? (theme === "dark" ? "bg-white/10 text-white" : "bg-slate-200/80 text-slate-800 shadow-sm") 
                     : (theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-500 hover:text-slate-800")
@@ -595,7 +566,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => handleTabChange("culture")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                   activeTab === "culture" 
                     ? (theme === "dark" ? "bg-white/10 text-white" : "bg-slate-200/80 text-slate-800 shadow-sm") 
                     : (theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-500 hover:text-slate-800")
@@ -606,7 +577,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => handleTabChange("tourism")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                   activeTab === "tourism" 
                     ? (theme === "dark" ? "bg-white/10 text-white" : "bg-slate-200/80 text-slate-800 shadow-sm") 
                     : (theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-500 hover:text-slate-800")
@@ -617,7 +588,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => handleTabChange("culinary")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                   activeTab === "culinary" 
                     ? (theme === "dark" ? "bg-white/10 text-white" : "bg-slate-200/80 text-slate-800 shadow-sm") 
                     : (theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-500 hover:text-slate-800")
@@ -628,7 +599,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => handleTabChange("ai")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap border bg-gradient-to-r ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap border bg-gradient-to-r ${
                   activeTab === "ai" 
                     ? (theme === "dark" ? "from-blue-600/30 to-indigo-600/30 text-white border-blue-500" : "from-blue-100 to-indigo-100 text-blue-800 border-blue-400 shadow-sm") 
                     : (theme === "dark" ? "from-blue-900/40 to-indigo-900/40 text-blue-300 border-blue-500/20 hover:from-blue-800/50 hover:to-indigo-800/50" : "bg-blue-50/50 text-blue-600 border-blue-200 hover:bg-blue-50")
@@ -639,7 +610,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => handleTabChange("itinerary")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap border bg-gradient-to-r ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap border bg-gradient-to-r ${
                   activeTab === "itinerary" 
                     ? (theme === "dark" ? "from-emerald-600/30 to-teal-600/30 text-white border-emerald-500" : "from-emerald-100 to-teal-100 text-emerald-800 border-emerald-400 shadow-sm") 
                     : (theme === "dark" ? "from-emerald-900/40 to-teal-900/40 text-emerald-300 border-emerald-500/20 hover:from-emerald-800/50 hover:to-indigo-800/50" : "bg-emerald-50/50 text-emerald-600 border-emerald-200 hover:bg-emerald-50")
@@ -650,7 +621,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => handleTabChange("checklist")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap border bg-gradient-to-r ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap border bg-gradient-to-r ${
                   activeTab === "checklist" 
                     ? (theme === "dark" ? "from-indigo-600/30 to-violet-600/30 text-white border-indigo-500" : "from-indigo-100 to-violet-100 text-indigo-800 border-indigo-400 shadow-sm") 
                     : (theme === "dark" ? "from-indigo-900/40 to-violet-900/40 text-indigo-300 border-indigo-500/20 hover:from-indigo-800/50 hover:to-indigo-800/50" : "bg-indigo-50/50 text-indigo-600 border-indigo-200 hover:bg-indigo-50")
@@ -661,7 +632,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => handleTabChange("ranking")}
-                className={`flex-1 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap border bg-gradient-to-r ${
+                className={`flex-1 shrink-0 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap border bg-gradient-to-r ${
                   activeTab === "ranking" 
                     ? (theme === "dark" ? "from-violet-600/30 to-purple-600/30 text-white border-violet-500" : "from-violet-100 to-purple-100 text-violet-800 border-violet-400 shadow-sm") 
                     : (theme === "dark" ? "from-violet-900/40 to-purple-900/40 text-violet-300 border-violet-500/20 hover:from-violet-800/50 hover:to-indigo-800/50" : "bg-violet-50/50 text-violet-600 border-violet-200 hover:bg-violet-50")
@@ -673,52 +644,92 @@ export default function App() {
             </div>
 
             {/* Dynamic Content Display */}
-            <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between overflow-y-auto max-h-[320px] sm:max-h-[420px] md:max-h-[480px]">
+            <div className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col gap-6 overflow-y-auto max-h-[320px] sm:max-h-[420px] md:max-h-[480px] snap-y snap-mandatory scroll-smooth">
               
               {/* Tab: General Facts / Overview */}
               {activeTab === "overview" && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="flex items-center gap-2 mb-1">
-                    <BookOpen className="w-4 h-4 text-blue-500" />
-                    <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
-                      {language === "en" ? "Key Facts & Brief History" : "Fakta Kunci & Sejarah Singkat"}
-                    </h3>
+                <div className="space-y-6 animate-fadeIn">
+                  {/* General Description */}
+                  <div className="snap-start scroll-mt-6">
+                    <p className={`text-xs sm:text-sm leading-relaxed font-light transition-colors ${theme === "dark" ? "text-gray-300" : "text-slate-600"}`}>
+                      {selectedProvince.description}
+                    </p>
                   </div>
-                  <ul className="space-y-3">
-                    {selectedProvince.facts.map((fact, index) => (
-                      <li key={index} className={`flex gap-3 text-sm p-3 rounded-2xl relative overflow-hidden border transition-all ${theme === "dark" ? "text-gray-300 bg-white/[0.02] border-white/5" : "text-slate-600 bg-slate-50 border-slate-200"}`}>
-                        <span className="text-xs font-mono font-bold text-blue-500">0{index+1}</span>
-                        <span className="leading-relaxed">{fact}</span>
-                      </li>
-                    ))}
-                  </ul>
 
-                  {/* Demographic & Geographic Index Visualization */}
-                  <ProvinceStats province={selectedProvince} language={language} theme={theme} />
+                  {/* Real-time Weather Display */}
+                  <div className="snap-start scroll-mt-6">
+                    <WeatherWidget province={selectedProvince} language={language} theme={theme} />
+                  </div>
+
+                  {/* Micro Quick Statistics Grid */}
+                  <div className="snap-start scroll-mt-6 grid grid-cols-2 gap-2 sm:gap-3">
+                    <div className={`backdrop-blur-md border p-2.5 sm:p-3 rounded-2xl transition-all duration-300 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-white/10 border-white/20 shadow-[0_4px_12px_rgba(31,38,135,0.02)]"}`}>
+                      <span className={`text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider block mb-0.5 ${theme === "dark" ? "text-gray-500" : "text-slate-400"}`}>
+                        {language === "en" ? "Top Destinations" : "Destinasi Utama"}
+                      </span>
+                      <span className={`text-[11px] sm:text-xs font-medium line-clamp-1 transition-colors ${theme === "dark" ? "text-gray-200" : "text-slate-800"}`}>
+                        {selectedProvince.tourism[0]} & {selectedProvince.tourism[1]}
+                      </span>
+                    </div>
+                    <div className={`backdrop-blur-md border p-2.5 sm:p-3 rounded-2xl transition-all duration-300 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-white/10 border-white/20 shadow-[0_4px_12px_rgba(31,38,135,0.02)]"}`}>
+                      <span className={`text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider block mb-0.5 ${theme === "dark" ? "text-gray-500" : "text-slate-400"}`}>
+                        {language === "en" ? "Popular Culture" : "Budaya Populer"}
+                      </span>
+                      <span className={`text-[11px] sm:text-xs font-medium line-clamp-1 transition-colors ${theme === "dark" ? "text-gray-200" : "text-slate-800"}`}>
+                        {selectedProvince.culture[0]}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className={`border-t my-1 ${theme === "dark" ? "border-white/10" : "border-slate-200/80"}`} />
+
+                  <div className="snap-start scroll-mt-6 space-y-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <BookOpen className="w-4 h-4 text-blue-500" />
+                      <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
+                        {language === "en" ? "Key Facts & Brief History" : "Fakta Kunci & Sejarah Singkat"}
+                      </h3>
+                    </div>
+                    <ul className="space-y-3">
+                      {selectedProvince.facts.map((fact, index) => (
+                        <li key={index} className={`flex gap-3 text-sm p-3 rounded-2xl relative overflow-hidden border transition-all ${theme === "dark" ? "text-gray-300 bg-white/[0.02] border-white/5" : "text-slate-600 bg-slate-50 border-slate-200"}`}>
+                          <span className="text-xs font-mono font-bold text-blue-500">0{index+1}</span>
+                          <span className="leading-relaxed">{fact}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Demographic & Geographic Index Visualization */}
+                    <ProvinceStats province={selectedProvince} language={language} theme={theme} />
+                  </div>
                 </div>
               )}
 
               {/* Tab: History Stepper */}
               {activeTab === "history" && (
-                <ProvinceHistory
-                  provinceId={selectedProvince.id}
-                  island={selectedProvince.island}
-                  provinceName={selectedProvince.name}
-                  language={language}
-                  theme={theme}
-                />
+                <div className="snap-start scroll-mt-6">
+                  <ProvinceHistory
+                    provinceId={selectedProvince.id}
+                    island={selectedProvince.island}
+                    provinceName={selectedProvince.name}
+                    language={language}
+                    theme={theme}
+                  />
+                </div>
               )}
 
               {/* Tab: Culture Details */}
               {activeTab === "culture" && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Music className="w-4 h-4 text-amber-500" />
-                    <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
-                      {language === "en" ? "Cultural Arts & Noble Heritage" : "Seni Budaya & Warisan Luhur"}
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">                     {selectedProvince.culture.map((item, index) => (
+                <div className="space-y-6 animate-fadeIn">
+                  <div className="snap-start scroll-mt-6 space-y-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Music className="w-4 h-4 text-amber-500" />
+                      <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
+                        {language === "en" ? "Cultural Arts & Noble Heritage" : "Seni Budaya & Warisan Luhur"}
+                      </h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">                     {selectedProvince.culture.map((item, index) => (
                       <div key={index} className={`border p-3.5 rounded-2xl text-center flex flex-col items-center justify-center transition-colors ${theme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-white/60 hover:bg-white/80 border-slate-200/60 shadow-[0_2px_8px_rgba(31,38,135,0.02)]"}`}>
                         <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center mb-2">
                           <Music className="w-4 h-4 text-amber-500" />
@@ -733,8 +744,9 @@ export default function App() {
                         <span className={`text-sm font-semibold text-center line-clamp-2 transition-colors ${theme === "dark" ? "text-white" : "text-slate-800"}`}>{item}</span>
                       </div>
                     ))}
+                    </div>
                   </div>
-                  <div className={`p-4 rounded-2xl transition-all border ${theme === "dark" ? "bg-amber-950/10 border-amber-500/15" : "bg-amber-500/10 border-amber-500/20"}`}>
+                  <div className={`snap-start scroll-mt-6 p-4 rounded-2xl transition-all border ${theme === "dark" ? "bg-amber-950/10 border-amber-500/15" : "bg-amber-500/10 border-amber-500/20"}`}>
                     <p className={`text-xs leading-relaxed flex gap-2 transition-all ${theme === "dark" ? "text-amber-300/90" : "text-amber-800"}`}>
                       <Volume2 className="w-4 h-4 shrink-0 mt-0.5" />
                       <span>
@@ -751,61 +763,65 @@ export default function App() {
 
               {/* Tab: Tourism Attractions */}
               {activeTab === "tourism" && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Palmtree className="w-4 h-4 text-emerald-500" />
-                    <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
-                      {language === "en" ? "Recommended Best Destinations" : "Rekomendasi Destinasi Terbaik"}
-                    </h3>
-                  </div>
-                  <div className="space-y-2.5">
-                    {selectedProvince.tourism.map((destination, index) => (
-                      <div key={index} className={`flex items-center justify-between border p-3.5 rounded-2xl transition-all duration-300 ${theme === "dark" ? "bg-white/[0.02] hover:bg-white/[0.05] border-white/5" : "bg-white/60 hover:bg-white/80 border-slate-200/60 shadow-sm"}`}>
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-xs font-mono font-bold">
-                            #{index + 1}
+                <div className="space-y-6 animate-fadeIn">
+                  <div className="snap-start scroll-mt-6 space-y-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Palmtree className="w-4 h-4 text-emerald-500" />
+                      <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
+                        {language === "en" ? "Recommended Best Destinations" : "Rekomendasi Destinasi Terbaik"}
+                      </h3>
+                    </div>
+                    <div className="space-y-2.5">
+                      {selectedProvince.tourism.map((destination, index) => (
+                        <div key={index} className={`flex items-center justify-between border p-3.5 rounded-2xl transition-all duration-300 ${theme === "dark" ? "bg-white/[0.02] hover:bg-white/[0.05] border-white/5" : "bg-white/60 hover:bg-white/80 border-slate-200/60 shadow-sm"}`}>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-xs font-mono font-bold">
+                              #{index + 1}
+                            </div>
+                            <div>
+                              <h4 className={`text-sm font-semibold transition-colors ${theme === "dark" ? "text-white" : "text-slate-800"}`}>{destination}</h4>
+                              <span className={`text-[10px] uppercase transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
+                                {language === "en" ? "Premier Tourist Destination" : "Destinasi Wisata Unggulan"}
+                              </span>
+                            </div>
                           </div>
-                          <div>
-                            <h4 className={`text-sm font-semibold transition-colors ${theme === "dark" ? "text-white" : "text-slate-800"}`}>{destination}</h4>
-                            <span className={`text-[10px] uppercase transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
-                              {language === "en" ? "Premier Tourist Destination" : "Destinasi Wisata Unggulan"}
-                            </span>
-                          </div>
+                          <span className={`text-[10px] font-mono tracking-widest flex items-center gap-1 px-2.5 py-1 rounded-full border transition-all ${theme === "dark" ? "text-emerald-400 bg-emerald-950/20 border-emerald-500/10" : "text-emerald-700 bg-emerald-500/10 border-emerald-500/20"}`}>
+                            Visit
+                          </span>
                         </div>
-                        <span className={`text-[10px] font-mono tracking-widest flex items-center gap-1 px-2.5 py-1 rounded-full border transition-all ${theme === "dark" ? "text-emerald-400 bg-emerald-950/20 border-emerald-500/10" : "text-emerald-700 bg-emerald-500/10 border-emerald-500/20"}`}>
-                          Visit
-                        </span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
 
               {/* Tab: Culinary Adventures */}
               {activeTab === "culinary" && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Utensils className="w-4 h-4 text-rose-500" />
-                    <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
-                      {language === "en" ? "Flavorful Traditional Culinary" : "Kuliner Tradisional Kaya Rasa"}
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    {selectedProvince.culinary.map((food, index) => (
-                      <div key={index} className={`border p-3.5 rounded-2xl flex flex-col justify-between transition-colors ${theme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-white/60 hover:bg-white/80 border-slate-200/60 shadow-[0_2px_8px_rgba(31,38,135,0.02)]"}`}>
-                        <div className="w-8 h-8 rounded-full bg-rose-500/10 flex items-center justify-center mb-2">
-                          <Utensils className="w-4 h-4 text-rose-500" />
+                <div className="space-y-6 animate-fadeIn">
+                  <div className="snap-start scroll-mt-6 space-y-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Utensils className="w-4 h-4 text-rose-500" />
+                      <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
+                        {language === "en" ? "Flavorful Traditional Culinary" : "Kuliner Tradisional Kaya Rasa"}
+                      </h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {selectedProvince.culinary.map((food, index) => (
+                        <div key={index} className={`border p-3.5 rounded-2xl flex flex-col justify-between transition-colors ${theme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-white/60 hover:bg-white/80 border-slate-200/60 shadow-[0_2px_8px_rgba(31,38,135,0.02)]"}`}>
+                          <div className="w-8 h-8 rounded-full bg-rose-500/10 flex items-center justify-center mb-2">
+                            <Utensils className="w-4 h-4 text-rose-500" />
+                          </div>
+                          <div>
+                            <span className={`text-[9px] uppercase font-mono block mb-1 transition-colors ${theme === "dark" ? "text-gray-500" : "text-slate-400"}`}>
+                              {language === "en" ? `Culinary #0${index+1}` : `Kuliner #0${index+1}`}
+                            </span>
+                            <span className={`text-sm font-bold leading-tight transition-colors ${theme === "dark" ? "text-white" : "text-slate-800"}`}>{food}</span>
+                          </div>
                         </div>
-                        <div>
-                          <span className={`text-[9px] uppercase font-mono block mb-1 transition-colors ${theme === "dark" ? "text-gray-500" : "text-slate-400"}`}>
-                            {language === "en" ? `Culinary #0${index+1}` : `Kuliner #0${index+1}`}
-                          </span>
-                          <span className={`text-sm font-bold leading-tight transition-colors ${theme === "dark" ? "text-white" : "text-slate-800"}`}>{food}</span>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                  <div className={`p-4 rounded-2xl transition-all border ${theme === "dark" ? "bg-rose-950/10 border-rose-500/15" : "bg-rose-500/10 border-rose-500/20"}`}>
+                  <div className={`snap-start scroll-mt-6 p-4 rounded-2xl transition-all border ${theme === "dark" ? "bg-rose-950/10 border-rose-500/15" : "bg-rose-500/10 border-rose-500/20"}`}>
                     <p className={`text-xs leading-relaxed transition-all ${theme === "dark" ? "text-rose-300/90" : "text-rose-800"}`}>
                       {language === "en" ? (
                         "Nusantara's signature spices produce rich and authentic culinary flavors, combining age-old traditions in every single bite."
@@ -1321,14 +1337,16 @@ export default function App() {
 
               {/* Tab: Province Rankings & Metrics */}
               {activeTab === "ranking" && (
-                <ProvinceRanking
-                  selectedProvince={selectedProvince}
-                  onSelectProvince={(prov) => {
-                    setSelectedProvince(prov);
-                  }}
-                  language={language}
-                  theme={theme}
-                />
+                <div className="snap-start scroll-mt-6">
+                  <ProvinceRanking
+                    selectedProvince={selectedProvince}
+                    onSelectProvince={(prov) => {
+                      setSelectedProvince(prov);
+                    }}
+                    language={language}
+                    theme={theme}
+                  />
+                </div>
               )}
 
             </div>
