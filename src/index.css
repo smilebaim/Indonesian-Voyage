@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-spin-slow: spin 20s linear infinite;
+  --animate-fadeIn: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-grid-pan: gridPan 180s linear infinite;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes gridPan {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 1000px 1000px;
+    }
+  }
+}
