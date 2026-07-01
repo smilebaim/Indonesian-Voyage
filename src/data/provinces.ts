@@ -36,7 +36,7 @@ export const PROVINCES: Province[] = [
       "Tari Saman telah diakui oleh UNESCO sebagai Warisan Budaya Takbenda.",
       "Memiliki pelabuhan kuno Barus yang sudah terkenal sejak abad ke-1 Masehi."
     ],
-    tourism: ["Masjid Raya Baiturrahman", "Pulau Weh (Sabang)", "Taman Nasional Gunung Leuser"],
+    tourism: ["Masjid Raya Baiturrahman","Pulau Weh (Sabang)","Taman Nasional Gunung Leuser","Museum Tsunami Aceh","Pantai Lampuuk","Danau Laut Tawar","Puncak Gurutee"],
     culture: ["Tari Saman", "Tari Seudati", "Rumah Adat Krong Bade", "Rencong"],
     culinary: ["Mie Aceh", "Kopi Gayo", "Ayam Tangkap", "Roti Canai"],
     color: "#059669"
@@ -53,7 +53,7 @@ export const PROVINCES: Province[] = [
       "Ibu kota Medan adalah salah satu pusat multikulturalisme terbesar dengan komunitas Tionghoa, India, Melayu, dan Batak.",
       "Istana Maimun mencerminkan arsitektur perpaduan Melayu, Islam, Spanyol, India, dan Italia."
     ],
-    tourism: ["Danau Toba & Pulau Samosir", "Istana Maimun Medan", "Bukit Lawang (Orangutan)"],
+    tourism: ["Danau Toba & Pulau Samosir","Istana Maimun","Bukit Lawang","Air Terjun Sipiso-piso","Taman Alam Lumbini","Kawah Putih Tinggi Raja","Rahmat International Wildlife Museum"],
     culture: ["Tari Tor-Tor", "Kain Ulos", "Rumah Bolon Batak", "Alat Musik Garantung"],
     culinary: ["Bika Ambon", "Soto Medan", "Arsik Ikan Mas", "Durian Ucok"],
     color: "#047857"
@@ -70,7 +70,7 @@ export const PROVINCES: Province[] = [
       "Rendang dinobatkan sebagai salah satu makanan terlezat di dunia versi CNN berkali-kali.",
       "Lembah Harau sering dijuluki sebagai Yosemite-nya Indonesia."
     ],
-    tourism: ["Jam Gadang Bukittinggi", "Lembah Harau", "Danau Maninjau", "Pantai Air Manis"],
+    tourism: ["Jam Gadang","Lembah Harau","Danau Maninjau","Pantai Air Manis","Istano Basa Pagaruyung","Kepulauan Mentawai","Ngarai Sianok"],
     culture: ["Tari Piring", "Kain Songket Pandai Sikek", "Rumah Gadang", "Upacara Tabuik"],
     culinary: ["Rendang Minang", "Sate Padang", "Nasi Kapau", "Teh Talua"],
     color: "#0f766e"
@@ -86,7 +86,7 @@ export const PROVINCES: Province[] = [
       "Bahasa Melayu Riau menjadi cikal bakal bahasa persatuan, Bahasa Indonesia.",
       "Istana Siak menyimpan alat musik Komet, piringan musik langka yang hanya ada dua di dunia."
     ],
-    tourism: ["Istana Siak Sri Indrapura", "Candi Muara Takus", "Sungai Kampar (Ombak Bono)"],
+    tourism: ["Istana Siak Sri Indrapura","Candi Muara Takus","Sungai Kampar (Ombak Bono)","Pulau Jemur","Air Terjun Aek Martua","Taman Nasional Tesso Nilo"],
     culture: ["Tari Zapin Melayu", "Kain Tenun Siak", "Seni Teater Mak Yong"],
     culinary: ["Gulai Patin", "Ikan Baung Asam Pedas", "Lopek Bugi"],
     color: "#14b8a6"
@@ -102,7 +102,7 @@ export const PROVINCES: Province[] = [
       "Pulau Penyengat adalah pusat penulisan Gurindam 12 oleh Raja Ali Haji, pahlawan bahasa Indonesia.",
       "Kota Batam adalah kawasan perdagangan bebas dan manufaktur tersibuk di jalur internasional."
     ],
-    tourism: ["Pulau Penyengat", "Pantai Trikora Bintan", "Jembatan Barelang Batam"],
+    tourism: ["Pulau Penyengat","Pantai Trikora Bintan","Jembatan Barelang","Bawah Reserve","Gurun Pasir Busung","Pantai Lagoi","Pulau Ranoh"],
     culture: ["Gurindam 12", "Tari Joget Lambak", "Kain Serat Mahkota"],
     culinary: ["Otak-Otak Kepri", "Luten Bertelur", "Mie Lendir"],
     color: "#20b2aa"
@@ -118,7 +118,7 @@ export const PROVINCES: Province[] = [
       "Kawasan Candi Muaro Jambi memiliki luas 12 kilometer persegi, diduga pusat universitas Buddha kuno.",
       "Gunung Kerinci adalah gunung berapi aktif tertinggi di Asia Tenggara (3.805 mdpl)."
     ],
-    tourism: ["Situs Candi Muaro Jambi", "Gunung Kerinci", "Danau Kaco"],
+    tourism: ["Situs Candi Muaro Jambi","Gunung Kerinci","Danau Kaco","Taman Nasional Bukit Duabelas","Jembatan Gentala Arasy","Geopark Merangin"],
     culture: ["Tari Sekapur Sirih", "Batik Jambi", "Rumah Lari Kambing"],
     culinary: ["Tempoyak Patin", "Nasi Gemuk", "Kue Padamaran"],
     color: "#115e59"
@@ -134,7 +134,7 @@ export const PROVINCES: Province[] = [
       "Sriwijaya adalah kerajaan maritim terbesar di Asia Tenggara yang menguasai Selat Malaka.",
       "Palembang merupakan salah satu kota tertua di Indonesia, berdiri sejak Juni 682 Masehi."
     ],
-    tourism: ["Jembatan Ampera & Sungai Musi", "Pulau Kemaro", "Taman Purbakala Kerajaan Sriwijaya"],
+    tourism: ["Jembatan Ampera","Pulau Kemaro","Taman Purbakala Kerajaan Sriwijaya","Danau Ranau","Gunung Dempo","Benteng Kuto Besak"],
     culture: ["Tari Gending Sriwijaya", "Kain Songket Palembang", "Rumah Limas"],
     culinary: ["Pempek Palembang", "Tekwan", "Laksan", "Pindang Patin"],
     color: "#065f46"
@@ -150,7 +150,7 @@ export const PROVINCES: Province[] = [
       "Pantai Belitung terkenal dengan formasi batu granit artistik berusia 200 juta tahun.",
       "Museum Kata Andrea Hirata di Belitung adalah museum sastra pertama di Indonesia."
     ],
-    tourism: ["Pantai Tanjung Tinggi (Laskar Pelangi)", "Pulau Lengkuas", "Museum Kata Andrea Hirata"],
+    tourism: ["Pantai Tanjung Tinggi","Pulau Lengkuas","Museum Kata Andrea Hirata","Danau Kaolin","Pantai Parai Tenggiri","Bangka Botanical Garden"],
     culture: ["Tari Sepintu Sedulang", "Tradisi Nganggung", "Kain Cual Bangka"],
     culinary: ["Mie Bangka", "Lempah Kuning", "Martabak Manis Bangka"],
     color: "#0d9488"
@@ -166,7 +166,7 @@ export const PROVINCES: Province[] = [
       "Bunga Rafflesia arnoldii adalah bunga terbesar di dunia, ditemukan pertama kali di Bengkulu tahun 1818.",
       "Benteng Marlborough (Fort Marlborough) adalah benteng peninggalan Inggris terbesar di Asia."
     ],
-    tourism: ["Fort Marlborough", "Rumah Pengasingan Bung Karno", "Pusat Pelatihan Gajah Seblat"],
+    tourism: ["Fort Marlborough","Rumah Pengasingan Bung Karno","Pusat Pelatihan Gajah Seblat","Pantai Panjang","Danau Dendam Tak Sudah","Pulau Enggano"],
     culture: ["Tari Kejei", "Upacara Tabot", "Kain Besurek"],
     culinary: ["Pendap", "Bagendit", "Gulai Kemba'ang"],
     color: "#134e4a"
@@ -182,7 +182,7 @@ export const PROVINCES: Province[] = [
       "Taman Nasional Way Kambas adalah sekolah pelatihan gajah pertama dan tertua di Indonesia.",
       "Menara Siger merupakan simbol titik nol selatan Sumatra yang ikonik di pelabuhan Bakauheni."
     ],
-    tourism: ["Taman Nasional Way Kambas", "Gunung Anak Krakatau", "Pantai Gigi Hiu"],
+    tourism: ["Taman Nasional Way Kambas","Gunung Anak Krakatau","Pantai Gigi Hiu","Teluk Kiluan","Pulau Pahawang","Menara Siger","Taman Nasional Bukit Barisan Selatan"],
     culture: ["Tari Sembah", "Kain Tapis Lampung", "Sigeh Pengunten"],
     culinary: ["Seruit", "Kripik Pisang Cokelat", "Sambal Tempoyak"],
     color: "#12b886"
@@ -200,7 +200,7 @@ export const PROVINCES: Province[] = [
       "Suku Baduy Dalam di Banten menolak modernisasi dan hidup harmonis dengan alam murni tanpa listrik.",
       "Taman Nasional Ujung Kulon adalah habitat terakhir Badak Jawa bercula satu yang terancam punah."
     ],
-    tourism: ["Taman Nasional Ujung Kulon", "Kampung Adat Baduy", "Masjid Agung Banten Lama"],
+    tourism: ["Taman Nasional Ujung Kulon","Kampung Adat Baduy","Masjid Agung Banten","Pantai Anyer","Pantai Tanjung Lesung","Pulau Umang","Gunung Krakatau"],
     culture: ["Seni Debus", "Angklung Buhun Baduy", "Pakaian Adat Pangsi"],
     culinary: ["Sate Bandeng", "Rabeg Banten", "Nasi Sumsum"],
     color: "#0284c7"
@@ -216,7 +216,7 @@ export const PROVINCES: Province[] = [
       "Jakarta adalah kota terbesar di Asia Tenggara dan pernah bernama Batavia serta Jayakarta.",
       "Memiliki sistem transportasi BRT (Transjakarta) terpanjang di dunia."
     ],
-    tourism: ["Monas (Monumen Nasional)", "Kota Tua Jakarta", "Taman Mini Indonesia Indah (TMII)"],
+    tourism: ["Monas (Monumen Nasional)","Kota Tua","Taman Mini Indonesia Indah (TMII)","Taman Impian Jaya Ancol","Kepulauan Seribu","Museum Nasional","Galeri Nasional"],
     culture: ["Ondel-Ondel", "Tari Yapong", "Rumah Kebaya Betawi", "Gambang Kromong"],
     culinary: ["Kerak Telor", "Soto Betawi", "Gado-Gado", "Roti Buaya"],
     color: "#0369a1"
@@ -232,7 +232,7 @@ export const PROVINCES: Province[] = [
       "Angklung terdaftar sebagai Warisan Budaya Takbenda UNESCO sejak tahun 2010.",
       "Gedung Sate di Bandung memiliki tusuk sate ikonik di puncaknya dengan 6 ornamen air yang melambangkan biaya pembangunan."
     ],
-    tourism: ["Kawah Putih Ciwidey", "Tangkuban Perahu", "Saung Angklung Udjo", "Pangandaran"],
+    tourism: ["Kawah Putih Ciwidey","Tangkuban Perahu","Saung Angklung Udjo","Pangandaran","Kebun Raya Bogor","Taman Safari Indonesia","Gunung Gede Pangrango","Green Canyon"],
     culture: ["Tari Jaipong", "Alat Musik Angklung", "Wayang Golek", "Rumah Julang Ngapak"],
     culinary: ["Nasi Timbel", "Karedok", "Seblak", "Batagor & Somay"],
     color: "#0284c7"
@@ -248,7 +248,7 @@ export const PROVINCES: Province[] = [
       "Candi Borobudur di Magelang adalah candi Buddha terbesar di dunia yang dibangun abad ke-9.",
       "Batik tulis Lasem terkenal dengan perpaduan warna merah darah ayam khas Tionghoa dan motif Jawa."
     ],
-    tourism: ["Candi Borobudur", "Dataran Tinggi Dieng", "Kepulauan Karimunjawa"],
+    tourism: ["Candi Borobudur","Dataran Tinggi Dieng","Kepulauan Karimunjawa","Candi Prambanan (Bagian Klaten)","Lawang Sewu","Gunung Merbabu","Kawasan Wisata Bandungan"],
     culture: ["Wayang Kulit", "Keris", "Gamelan Jawa", "Rumah Joglo"],
     culinary: ["Lumpia Semarang", "Nasi Liwet Solo", "Soto Kudus", "Gethuk"],
     color: "#0f52ba"
@@ -280,7 +280,7 @@ export const PROVINCES: Province[] = [
       "Gunung Bromo terkenal dengan lautan pasir berbisik dan upacara Kasada suku Tengger.",
       "Kawah Ijen memiliki fenomena 'Blue Fire' api biru belerang alami yang hanya ada dua di dunia."
     ],
-    tourism: ["Gunung Bromo", "Kawah Ijen Banyuwangi", "Taman Nasional Baluran", "Batu Secret Zoo"],
+    tourism: ["Gunung Bromo","Kawah Ijen","Taman Nasional Baluran","Batu Secret Zoo","Museum Angkut","Jatim Park","Taman Nasional Alas Purwo","Gili Ketapang"],
     culture: ["Reog Ponorogo", "Tari Gandrung", "Karapan Sapi Madura"],
     culinary: ["Rawon (Sup Hitam)", "Rujak Cingur", "Lontong Kupang", "Sate Madura"],
     color: "#1d4ed8"
@@ -298,7 +298,7 @@ export const PROVINCES: Province[] = [
       "Nyepi adalah hari keheningan total di seluruh pulau, tanpa penerangan, aktivitas, maupun penerbangan.",
       "Sistem irigasi sawah Subak di Bali ditetapkan sebagai Warisan Dunia UNESCO."
     ],
-    tourism: ["Tanah Lot", "Ubud Sawah Terasering", "Pura Uluwatu", "Nusa Penida"],
+    tourism: ["Tanah Lot","Ubud Sawah Terasering","Pura Uluwatu","Nusa Penida","Pantai Kuta","Gunung Batur","Taman Nasional Bali Barat","Pura Besakih","Monkey Forest Ubud"],
     culture: ["Tari Kecak", "Tari Barong", "Sistem Irigasi Subak", "Upacara Ngaben (Kremasi)"],
     culinary: ["Ayam Betutu", "Sate Lilit", "Babi Guling (Khas)", "Lawar"],
     color: "#be123c"
@@ -314,7 +314,7 @@ export const PROVINCES: Province[] = [
       "Sirkuit Mandalika di Lombok adalah sirkuit MotoGP jalan raya berkelas internasional paling indah.",
       "Gunung Tambora pernah meletus dahsyat tahun 1815, mengubah iklim dunia hingga memicu 'tahun tanpa musim panas' di Eropa."
     ],
-    tourism: ["Gili Trawangan, Meno & Air", "Sirkuit Mandalika Lombok", "Gunung Rinjani", "Pantai Pink"],
+    tourism: ["Gili Trawangan, Meno & Air","Sirkuit Mandalika","Gunung Rinjani","Pantai Pink","Bukit Merese","Air Terjun Sendang Gile","Desa Sade"],
     culture: ["Tari Gendang Beleq", "Rumah Adat Bale Tani Suku Sasak", "Tenun Ikat Sasak"],
     culinary: ["Ayam Taliwang", "Plecing Kangkung", "Sate Rembiga"],
     color: "#e11d48"
@@ -330,7 +330,7 @@ export const PROVINCES: Province[] = [
       "Taman Nasional Komodo adalah satu-satunya habitat alami Komodo Dragon di dunia.",
       "Danau Kelimutu memiliki tiga kawah dengan warna air berbeda yang terus berubah sewaktu-waktu secara misterius."
     ],
-    tourism: ["Pulau Komodo & Padar", "Danau Tiga Warna Kelimutu", "Pulau Sumba (Bukit Wairinding)"],
+    tourism: ["Pulau Komodo","Danau Kelimutu","Pulau Sumba (Bukit Wairinding)","Desa Wae Rebo","Pantai Nihiwatu","Pulau Padar","Labuan Bajo"],
     culture: ["Alat Musik Sasando", "Tari Caci", "Tenun Ikat Alor & Sumba", "Kampung Adat Waerebo"],
     culinary: ["Daging Se'i Kupang", "Jagung Bose", "Kolo (Nasi Bakar Bambu)"],
     color: "#9f1239"
@@ -348,7 +348,7 @@ export const PROVINCES: Province[] = [
       "Pontianak dilalui garis imajiner Khatulistiwa (0 derajat lintang bumi) yang ditandai dengan Tugu Khatulistiwa.",
       "Sungai Kapuas adalah sungai terpanjang di Indonesia, membentang sejauh 1.143 km."
     ],
-    tourism: ["Tugu Khatulistiwa Pontianak", "Keraton Kadriyah", "Taman Nasional Sentarum"],
+    tourism: ["Tugu Khatulistiwa","Keraton Kadriyah","Taman Nasional Sentarum","Pulau Randayan","Pantai Pasir Panjang","Bukit Kelam","Rumah Betang Radakng"],
     culture: ["Tari Monong Dayak", "Rumah Betang", "Perayaan Cap Go Meh Singkawang"],
     culinary: ["Bubur Pedas", "Choipan Pontianak", "Asam Pedas Tempoyak"],
     color: "#ea580c"
@@ -364,7 +364,7 @@ export const PROVINCES: Province[] = [
       "Taman Nasional Tanjung Puting diakui dunia sebagai cagar biosfer habitat asli Orangutan terbesar.",
       "Palangkaraya pernah direncanakan oleh Presiden Soekarno sebagai calon ibu kota masa depan Indonesia."
     ],
-    tourism: ["Taman Nasional Tanjung Puting", "Sungai Kahayan", "Bukit Tangkiling"],
+    tourism: ["Taman Nasional Tanjung Puting","Sungai Kahayan","Bukit Tangkiling","Taman Nasional Sebangau","Danau Tahai","Museum Balanga"],
     culture: ["Tari Kinyah Mandau", "Rumah Betang Dayak", "Seni Ukir Kayu Ulin"],
     culinary: ["Juhu Singkah (Pondoh Rotan)", "Wadi (Ikan Fermentasi)", "Karupuak Basah"],
     color: "#d97706"
@@ -380,7 +380,7 @@ export const PROVINCES: Province[] = [
       "Banjarmasin dijuluki 'Kota Seribu Sungai' dengan aktivitas ekonomi yang unik di atas air sejak ratusan tahun lalu.",
       "Kota Martapura merupakan penghasil batu mulia dan intan terbesar dan tercantik di Indonesia."
     ],
-    tourism: ["Pasar Terapung Lok Baintan", "Pusat Permata Martapura", "Pulau Kembang (Kera)"],
+    tourism: ["Pasar Terapung Lok Baintan","Pusat Permata Martapura","Pulau Kembang","Pantai Joras","Loksado","Bukit Matang Kaladan","Danau Seran"],
     culture: ["Tari Baksa Kembang", "Rumah Banjar Bubungan Tinggi", "Musik Panting"],
     culinary: ["Soto Banjar", "Ketupat Kandangan", "Bingka Kentang"],
     color: "#c2410c"
@@ -396,7 +396,7 @@ export const PROVINCES: Province[] = [
       "IKN (Ibu Kota Nusantara) secara resmi dibangun di wilayah Penajam Paser Utara untuk menggantikan Jakarta.",
       "Kepulauan Derawan adalah salah satu tempat menyelam terbaik di dunia dengan habitat ubur-ubur tanpa sengat di Kakaban."
     ],
-    tourism: ["IKN (Ibu Kota Nusantara)", "Kepulauan Derawan & Kakaban", "Desa Budaya Pampang"],
+    tourism: ["IKN (Ibu Kota Nusantara)","Kepulauan Derawan","Desa Budaya Pampang","Danau Labuan Cermin","Bukit Bangkirai","Pulau Kakaban","Taman Nasional Kutai"],
     culture: ["Tari Gong", "Pakaian Adat Sapei Sapaq", "Sumpit & Mandau"],
     culinary: ["Nasi Kuning Samarinda", "Gence Ruan", "Mantau Sapi"],
     color: "#ca8a04"
@@ -430,7 +430,7 @@ export const PROVINCES: Province[] = [
       "Taman Nasional Bunaken memiliki keanekaragaman hayati laut terkaya, menampung 390 spesies terumbu karang.",
       "Kota Tomohon terkenal dengan festival bunga internasional tahunan yang megah."
     ],
-    tourism: ["Taman Nasional Bunaken", "Danau Linow Tomohon", "Bukit Kasih"],
+    tourism: ["Taman Nasional Bunaken","Danau Linow","Bukit Kasih","Pulau Siladen","Taman Nasional Bogani Nani Wartabone","Pulau Lembeh","Gunung Mahawu"],
     culture: ["Tari Kabasaran (Perang)", "Musik Kolintang", "Rumah Pewaris Minahasa"],
     culinary: ["Bubur Tinutuan (Manado)", "Ayam Woku", "Klappertaart", "Sambal Roa"],
     color: "#7c3aed"
@@ -446,7 +446,7 @@ export const PROVINCES: Province[] = [
       "Perahu Sandeq adalah perahu layar bercadik tradisional Mandar yang dinilai tercepat di kelas perahu tradisional dunia.",
       "Kabupaten Polewali Mandar terkenal dengan tradisi menenun Sutera Mandar (Sa'be Mandar)."
     ],
-    tourism: ["Pulau Karampuang", "Air Terjun Tamasapi", "Pantai Lombang-Lombang"],
+    tourism: ["Pulau Karampuang","Air Terjun Tamasapi","Pantai Lombang-Lombang","Pantai Manakarra","Gong Nekara","Tari Sayyang Pattu'du"],
     culture: ["Perahu Layar Sandeq", "Tari Sayyang Pattu'du", "Tenun Sa'be Mandar"],
     culinary: ["Bau Peapi (Sup Ikan Mandar)", "Golli-Golli", "Kue Jepa"],
     color: "#6d28d9"
@@ -462,7 +462,7 @@ export const PROVINCES: Province[] = [
       "Lembah Bada menyimpan puluhan patung batu megalitik misterius yang mirip dengan patung di Easter Island.",
       "Kepulauan Togian adalah surga penyelaman yang sangat tenang dihuni suku Bajau (Pelaut Gipsi Laut)."
     ],
-    tourism: ["Kepulauan Togian", "Lembah Bada (Situs Megalitikum)", "Pusentasi (Pusat Laut)"],
+    tourism: ["Kepulauan Togian","Lembah Bada","Pusentasi (Pusat Laut)","Taman Nasional Lore Lindu","Pantai Tanjung Karang","Danau Poso","Tugu Perdamaian Nosarara Nosabatutu"],
     culture: ["Tari Dero", "Pakaian Serat Kulit Kayu Halili", "Gasing Kayu Palu"],
     culinary: ["Kaledo (Sup Kaki Sapi)", "Uta Dada", "Nasi Jagung Palu"],
     color: "#4f46e5"
@@ -478,7 +478,7 @@ export const PROVINCES: Province[] = [
       "Wakatobi diakui oleh Jacques Cousteau sebagai salah satu lokasi selam terindah di dunia.",
       "Benteng Keraton Buton adalah benteng terluas di dunia menurut Guinness Book of Records."
     ],
-    tourism: ["Taman Nasional Wakatobi", "Pulau Labengki (Mini Raja Ampat)", "Benteng Keraton Buton"],
+    tourism: ["Taman Nasional Wakatobi","Pulau Labengki","Benteng Keraton Buton","Pantai Nirwana","Air Terjun Moramo","Danau Biru","Pulau Bokori"],
     culture: ["Tari Lulo", "Kain Tenun Buton", "Seni Ukir Perak Kendari"],
     culinary: ["Sinonggi (Sagu)", "Kabuto", "Lapa-Lapa"],
     color: "#4338ca"
@@ -494,7 +494,7 @@ export const PROVINCES: Province[] = [
       "Perahu Phinisi buatan suku Bugis-Makassar telah menjelajahi samudra dunia sejak abad ke-14 tanpa paku logam.",
       "Tana Toraja terkenal dengan upacara kematian Rambu Solo' yang megah dan pemakaman gua tebing Londa."
     ],
-    tourism: ["Tana Toraja (Rambu Solo')", "Pantai Losari Makassar", "Tebing Apparalang Bulukumba", "Karst Rammang-Rammang"],
+    tourism: ["Tana Toraja (Rambu Solo')","Pantai Losari","Tebing Apparalang","Karst Rammang-Rammang","Taman Nasional Bantimurung","Pulau Samalona","Pantai Bira"],
     culture: ["Upacara Rambu Solo'", "Perahu Layar Phinisi Bugis", "Tari Pakarena", "Rumah Tongkonan"],
     culinary: ["Coto Makassar", "Konro Bakar", "Pisang Epe", "Es Pisang Ijo"],
     color: "#5b21b6"
@@ -510,7 +510,7 @@ export const PROVINCES: Province[] = [
       "Gorontalo memiliki pelestarian adat falsafah 'Adat bersendikan Syara, Syara bersendikan Kitabullah'.",
       "Pantai Botubarani terkenal karena gerombolan Hiu Paus jinak sering muncul hanya beberapa meter dari bibir pantai."
     ],
-    tourism: ["Hiu Paus Botubarani", "Benteng Otanaha", "Pulo Cinta (Resort Cinta berbentuk Hati)"],
+    tourism: ["Hiu Paus Botubarani","Benteng Otanaha","Pulo Cinta","Taman Laut Olele","Danau Limboto","Pulau Saronde"],
     culture: ["Sulaman Tradisional Karawo", "Tari Saronde", "Rumah Dulohupa"],
     culinary: ["Binthe Biluhuta (Sup Jagung)", "Ikan Bakar Rica Gorontalo", "Kue Pia Gorontalo"],
     color: "#6366f1"
@@ -528,7 +528,7 @@ export const PROVINCES: Province[] = [
       "Kepulauan Banda di Maluku dahulunya adalah satu-satunya penghasil pala di dunia, memicu barter Pulau Run dengan Manhattan antara Inggris dan Belanda.",
       "Ambon dinobatkan sebagai 'City of Music' oleh UNESCO karena musikalitas penduduknya yang luar biasa tinggi."
     ],
-    tourism: ["Pantai Ora Seram", "Kepulauan Banda Neira", "Benteng Belgica"],
+    tourism: ["Pantai Ora","Kepulauan Banda Neira","Benteng Belgica","Pantai Natsepa","Pulau Bair","Danau Rana","Pantai Ngurbloat"],
     culture: ["Tari Lenso", "Alat Musik Tifa", "Kain Tenun ikat Tanimbar", "Baju Cele"],
     culinary: ["Papeda Ikan Kuah Kuning", "Nasi Lapola", "Sagu Tumbu"],
     color: "#0891b2"
@@ -544,7 +544,7 @@ export const PROVINCES: Province[] = [
       "Ternate dan Tidore adalah kerajaan Islam terkaya di timur berkat monopoli rempah-rempah cengkeh di era kolonial.",
       "Keindahan kawah Gunung Gamalama diabadikan dalam uang kertas pecahan seribu rupiah lama."
     ],
-    tourism: ["Benteng Tolukko Ternate", "Pulau Maitara & Tidore", "Pantai Sulamadaha"],
+    tourism: ["Benteng Tolukko","Pulau Maitara & Tidore","Pantai Sulamadaha","Danau Tolire","Gunung Gamalama","Pulau Morotai","Keraton Kesultanan Ternate"],
     culture: ["Tari Soya-Soya", "Upacara Adat Kololi Kie", "Baju Koja"],
     culinary: ["Popeda", "Ikan Fufu", "Air Guraka (Jahe Kenari)"],
     color: "#0284c7"
@@ -562,7 +562,7 @@ export const PROVINCES: Province[] = [
       "Burung Cendrawasih (Bird of Paradise) merupakan burung endemik suci lambang kemegahan Papua.",
       "Puncak Jaya di Pegunungan Jayawijaya adalah satu-satunya puncak berselimut salju abadi di garis khatulistiwa Indonesia."
     ],
-    tourism: ["Danau Sentani", "Lembah Baliem", "Taman Nasional Lorentz"],
+    tourism: ["Danau Sentani","Lembah Baliem","Taman Nasional Lorentz","Pantai Base G","Bukit Teletubbies Sentani","Desa Wisata Tablanusu"],
     culture: ["Alat Musik Tifa", "Noken (Tas Serat Kayu UNESCO)", "Koteka & Sali", "Tari Perang Papua"],
     culinary: ["Papeda Sagu", "Ikan Kuah Kuning", "Kue Sagu Lempeng"],
     color: "#7c3aed"

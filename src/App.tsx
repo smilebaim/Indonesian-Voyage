@@ -514,6 +514,29 @@ export default function App() {
     }
   };
 
+  const handleShareProvince = async () => {
+    const shareData = {
+      title: `${selectedProvince?.name || "Indonesia"} - Indonesian Explorer`,
+      text: selectedProvince 
+        ? (language === "en" 
+          ? `Explore ${selectedProvince.name}, ${selectedProvince.description.toLowerCase()} Highlights include ${selectedProvince.tourism.slice(0, 3).join(", ")}!` 
+          : `Jelajahi ${selectedProvince.name}, ${selectedProvince.description.toLowerCase()} Destinasi unggulan: ${selectedProvince.tourism.slice(0, 3).join(", ")}!`)
+        : "Indonesian Explorer",
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.error("Error sharing:", err);
+      }
+    } else {
+      // Fallback
+      handleCopyLink();
+    }
+  };
+
   return (
     <motion.div 
       className="min-h-screen font-sans relative overflow-x-hidden selection:bg-blue-600 selection:text-white"
@@ -636,8 +659,15 @@ export default function App() {
                   </p>
                 </div>
                 
-                {/* Close Button & Visual Circle Progress / Stats Badge */}
+                {/* Action Buttons & Visual Circle Progress / Stats Badge */}
                 <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={handleShareProvince}
+                    className={`p-2 sm:p-2.5 rounded-xl sm:rounded-2xl border transition-all cursor-pointer ${theme === "dark" ? "bg-white/10 text-white hover:bg-white/20 border-white/15" : "bg-white text-slate-700 hover:bg-slate-50 border-slate-200 shadow-sm"} hover:scale-105 active:scale-95`}
+                    title={language === "en" ? "Share Province" : "Bagikan Provinsi"}
+                  >
+                    <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
+                  </button>
                   <button
                     onClick={() => setHasClickedMarker(false)}
                     className="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl border transition-all cursor-pointer bg-gradient-to-r from-rose-500 to-red-600 text-white border-transparent hover:brightness-110 hover:scale-105 active:scale-95 shadow-lg shadow-red-500/25"
@@ -1574,8 +1604,8 @@ export default function App() {
             {/* Interactive Leaflet Satellite Map Container */}
             <div className="relative z-10 w-full h-full flex-1">
               {/* HEADER / TOP FLOATING MENU (Floating on Upper Map) */}
-              <nav id="top-nav" className="absolute top-2.5 left-2.5 right-2.5 z-[401] transition-all duration-300">
-                <div className={`backdrop-blur-3xl border rounded-full px-3 md:px-4.5 py-1.5 md:py-2 flex flex-row items-center justify-between gap-2.5 transition-all duration-300 ${
+              <nav id="top-nav" className="absolute bottom-3 right-3 z-[401] transition-all duration-300">
+                <div className={`inline-flex backdrop-blur-3xl border rounded-full px-3 md:px-4.5 py-1.5 md:py-2 flex-row items-center justify-between gap-2.5 transition-all duration-300 ${
                   theme === "dark" 
                     ? "bg-black/10 border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]" 
                     : "bg-white/15 border-white/25 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"
@@ -1583,154 +1613,17 @@ export default function App() {
                   {/* Logo Brand */}
                   <div className="flex items-center gap-2 cursor-pointer" onClick={() => setSelectedProvince(PROVINCES.find(p => p.id === "jakarta")!)}>
                     <div className="w-7 h-7 bg-gradient-to-tr from-blue-600 to-emerald-500 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20 text-white font-black text-sm tracking-wider">
-                      N
+                      I
                     </div>
                     <div className="flex flex-col">
                       <span className={`text-xs md:text-sm font-bold tracking-widest uppercase flex items-center gap-1 transition-colors ${theme === "dark" ? "text-white" : "text-slate-900"}`}>
-                        NUSANTARA<span className="text-blue-500 font-light">EXPLORER</span>
+                        INDONESIAN<span className="text-blue-500 font-light">EXPLORER</span>
                       </span>
                       <span className={`text-[7px] md:text-[8px] uppercase tracking-widest font-mono transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>{language === "en" ? "INTERACTIVE MAP OF INDONESIA" : "PETA INTERAKTIF INDONESIA"}</span>
                     </div>
                   </div>
 
-                  {/* Search Box & Quick Settings */}
-                  <div className="flex items-center gap-1.5 shrink-0 justify-center">
 
-                    {/* Theme Toggle */}
-                    <button
-                      onClick={() => setTheme(prev => prev === "dark" ? "light" : "dark")}
-                      className={`w-7.5 h-7.5 rounded-full flex items-center justify-center transition-all duration-300 border shadow-inner ${
-                        theme === "dark" ? "bg-white/5 border-white/10 text-yellow-400 hover:text-white hover:bg-white/10" : "bg-slate-200/50 border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-200"
-                      }`}
-                      title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                    >
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={theme}
-                          initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
-                          animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                          exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          {theme === "dark" ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
-                        </motion.div>
-                      </AnimatePresence>
-                    </button>
-
-                    {/* Share Menu */}
-                    <div className="relative shrink-0">
-                      <button
-                        onClick={() => setShowShareMenu(prev => !prev)}
-                        className={`w-7.5 h-7.5 rounded-full flex items-center justify-center transition-all duration-300 border shadow-inner ${
-                          showShareMenu
-                            ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-500"
-                            : (theme === "dark" ? "bg-white/5 border-white/10 text-gray-400 hover:text-white" : "bg-slate-200/50 border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-200")
-                        }`}
-                        title={language === "en" ? "Share this provincial page" : "Bagikan halaman provinsi ini"}
-                      >
-                        <Share2 className="w-3.5 h-3.5" />
-                      </button>
-
-                      {showShareMenu && (
-                        <>
-                          <div className="fixed inset-0 z-40" onClick={() => setShowShareMenu(false)} />
-                          <div className="absolute right-0 mt-2.5 w-52 bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)] z-50 animate-fadeIn flex flex-col gap-1">
-                            {/* Share header */}
-                            <div className="px-3 py-1.5 text-[9px] font-bold text-gray-400 uppercase tracking-wider border-b border-white/5 mb-1 flex items-center justify-between">
-                              <span>{language === "en" ? "Share Province" : "Bagikan Provinsi"}</span>
-                              <span className="text-[8px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded-full uppercase truncate max-w-[90px]" title={selectedProvince.name}>
-                                {selectedProvince.name}
-                              </span>
-                            </div>
-
-                            {/* Copy Link */}
-                            <button
-                              onClick={handleCopyLink}
-                              className="flex items-center justify-between w-full px-3 py-2 text-xs font-medium text-left rounded-xl transition-all duration-200 hover:bg-white/5 text-gray-200"
-                            >
-                              <span className="flex items-center gap-2">
-                                {copied ? (
-                                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                                ) : (
-                                  <Copy className="w-3.5 h-3.5 text-blue-400" />
-                                )}
-                                <span>{language === "en" ? (copied ? "Copied!" : "Copy Link") : (copied ? "Tersalin!" : "Salin Tautan")}</span>
-                              </span>
-                            </button>
-
-                            {/* WhatsApp */}
-                            <a
-                              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                                language === "en"
-                                  ? `Check out ${selectedProvince.name} on Nusantara Explorer! 🇮🇩 ${window.location.href}`
-                                  : `Ayo jelajahi keindahan ${selectedProvince.name} di Nusantara Explorer! 🇮🇩 ${window.location.href}`
-                              )}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => setShowShareMenu(false)}
-                              className="flex items-center justify-between w-full px-3 py-2 text-xs font-medium text-left rounded-xl transition-all duration-200 hover:bg-emerald-500/10 text-gray-200"
-                            >
-                              <span className="flex items-center gap-2">
-                                <span className="w-3.5 h-3.5 flex items-center justify-center font-bold text-emerald-400">W</span>
-                                <span>WhatsApp</span>
-                              </span>
-                            </a>
-
-                            {/* X (Twitter) */}
-                            <a
-                              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                                language === "en"
-                                  ? `Explore the unique culture, tourist destinations, and culinary delights of ${selectedProvince.name} on Nusantara Explorer! 🇮🇩`
-                                  : `Jelajahi keunikan budaya, destinasi wisata, dan kuliner khas dari ${selectedProvince.name} di Nusantara Explorer! 🇮🇩`
-                              )}&url=${encodeURIComponent(window.location.href)}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => setShowShareMenu(false)}
-                              className="flex items-center justify-between w-full px-3 py-2 text-xs font-medium text-left rounded-xl transition-all duration-200 hover:bg-blue-500/10 text-gray-200"
-                            >
-                              <span className="flex items-center gap-2">
-                                <span className="w-3.5 h-3.5 flex items-center justify-center font-bold text-blue-400">X</span>
-                                <span>X (Twitter)</span>
-                              </span>
-                            </a>
-
-                            {/* Facebook */}
-                            <a
-                              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => setShowShareMenu(false)}
-                              className="flex items-center justify-between w-full px-3 py-2 text-xs font-medium text-left rounded-xl transition-all duration-200 hover:bg-blue-600/10 text-gray-200"
-                            >
-                              <span className="flex items-center gap-2">
-                                <span className="w-3.5 h-3.5 flex items-center justify-center font-bold text-blue-600">F</span>
-                                <span>Facebook</span>
-                              </span>
-                            </a>
-                          </div>
-                        </>
-                      )}
-                    </div>
-
-                    <div className="relative flex justify-end">
-                      <Search className={`absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none z-10 transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-400"}`} />
-                      <input
-                        type="text"
-                        placeholder={language === "en" ? "Search..." : "Cari..."}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className={`pl-7 sm:pl-7.5 pr-3 py-1.5 sm:py-1 rounded-full text-[11px] transition-all duration-300 focus:outline-none focus:border-blue-500 cursor-pointer focus:cursor-text ${searchQuery ? "w-32 sm:w-28 md:w-36" : "w-8 focus:w-32 sm:w-28 sm:focus:w-28 md:w-36 md:focus:w-36"} ${theme === "dark" ? "bg-white/10 sm:bg-white/5 border border-white/10 text-white placeholder-transparent sm:placeholder-gray-500 focus:placeholder-gray-500 focus:bg-white/10" : "bg-white/60 sm:bg-transparent border border-slate-200 text-slate-800 placeholder-transparent sm:placeholder-slate-400 focus:placeholder-slate-400 focus:bg-white/90 sm:focus:bg-transparent"}`}
-                      />
-                      {searchQuery && (
-                        <button 
-                          onClick={() => setSearchQuery("")} 
-                          className={`absolute right-2.5 top-1/2 -translate-y-1/2 z-10 transition-colors ${theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-400 hover:text-slate-700"}`}
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </nav>
               <SatelliteMap
@@ -1766,7 +1659,7 @@ export default function App() {
             </div>
 
             {/* Bottom Stats Banner (Floating Overlay) */}
-            <div className="absolute bottom-3 right-3 z-[400] transition-colors duration-300 pointer-events-none">
+            <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-[400] transition-colors duration-300 pointer-events-none">
               {/* Live Indonesian Time Zones Indicators */}
               <div className={`flex items-center gap-2.5 text-[10px] sm:text-xs font-mono py-1.5 px-3 md:px-3.5 rounded-full transition-colors border backdrop-blur-3xl shadow-2xl pointer-events-auto ${theme === "dark" ? "bg-black/65 border-white/10 text-gray-300" : "bg-white/15 border-white/25 text-slate-700 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"}`}>
                 <div className="flex items-center gap-1">
