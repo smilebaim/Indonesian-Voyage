@@ -1122,71 +1122,71 @@ export default function SatelliteMap({
       </div>
 
       {/* MAP CONTROLLER SWITCHER overlays */}
-      <div className={`absolute left-3 top-1/2 -translate-y-1/2 md:left-4 z-[400] flex flex-col items-center gap-1.5 backdrop-blur-3xl p-1.5 rounded-2xl border transition-all duration-300 ${
+      <div className={`absolute left-3 top-1/2 -translate-y-1/2 md:left-4 z-[400] flex flex-col items-center gap-1 backdrop-blur-3xl p-1 rounded-xl border transition-all duration-300 ${
         theme === "dark" 
           ? "bg-black/10 border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]" 
           : "bg-white/15 border-white/25 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"
       }`}>
         <button
           onClick={() => setMapType("satellite")}
-          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
             mapType === "satellite"
               ? "bg-blue-600 text-white"
               : (theme === "dark" ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100")
           }`}
           title={language === "en" ? "Satellite view" : "Tampilan Satelit"}
         >
-          <Globe className="w-4.5 h-4.5" />
+          <Globe className="w-3.5 h-3.5" />
         </button>
         
         <button
           onClick={() => setMapType("topo")}
-          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
             mapType === "topo"
               ? "bg-blue-600 text-white"
               : (theme === "dark" ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100")
           }`}
           title={language === "en" ? "Terrain view" : "Tampilan Terrain"}
         >
-          <Compass className="w-4.5 h-4.5" />
+          <Compass className="w-3.5 h-3.5" />
         </button>
 
 
-        <div className={`w-6 h-[1px] my-1 transition-colors duration-300 ${theme === "dark" ? "bg-white/10" : "bg-slate-200"}`} />
+        <div className={`w-4 h-[1px] my-0.5 transition-colors duration-300 ${theme === "dark" ? "bg-white/10" : "bg-slate-200"}`} />
 
         <button
           onClick={() => {
             setIsTourActive(prev => !prev);
             setIsTourPlaying(true);
           }}
-          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
             isTourActive
               ? "bg-amber-500 text-black font-extrabold hover:bg-amber-400 shadow-sm"
               : "text-amber-500 hover:text-amber-600 hover:bg-amber-500/10"
           }`}
           title={language === "en" ? "Virtual Tour" : "Tur Virtual"}
         >
-          <Sparkles className={`w-4.5 h-4.5 ${isTourActive ? "animate-pulse" : ""}`} />
+          <Sparkles className={`w-3.5 h-3.5 ${isTourActive ? "animate-pulse" : ""}`} />
         </button>
 
         <button
           onClick={zoomToFitIndonesia}
-          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
             theme === "dark" 
               ? "text-blue-400 hover:text-blue-300 hover:bg-blue-500/10" 
               : "text-blue-600 hover:text-blue-700 hover:bg-blue-50"
           }`}
           title={language === "en" ? "Fit Entire Indonesia" : "Fokus Seluruh Indonesia"}
         >
-          <Maximize2 className="w-4.5 h-4.5" />
+          <Maximize2 className="w-3.5 h-3.5" />
         </button>
 
         {setShowMarkers && (
           <>
-            <div className={`w-6 h-[1px] my-1 transition-colors duration-300 ${theme === "dark" ? "bg-white/10" : "bg-slate-200"}`} />
+            <div className={`w-4 h-[1px] my-0.5 transition-colors duration-300 ${theme === "dark" ? "bg-white/10" : "bg-slate-200"}`} />
             <button
               onClick={() => setShowMarkers(prev => !prev)}
-              className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+              className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
                 showMarkers
                   ? theme === "dark"
                     ? "bg-blue-500/15 text-blue-400 border border-blue-500/30 hover:bg-blue-500/25"
@@ -1197,45 +1197,9 @@ export default function SatelliteMap({
               }`}
               title={language === "en" ? (showMarkers ? "Hide Markers" : "Show Markers") : (showMarkers ? "Sembunyikan Pin" : "Tampilkan Pin")}
             >
-              <MapPin className={`w-4.5 h-4.5 ${showMarkers ? "animate-pulse" : ""}`} />
+              <MapPin className={`w-3.5 h-3.5 ${showMarkers ? "animate-pulse" : ""}`} />
             </button>
           </>
-        )}
-
-        {setShowRegionLabels && (
-          <button
-            onClick={() => setShowRegionLabels(prev => !prev)}
-            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
-              showRegionLabels
-                ? theme === "dark"
-                  ? "bg-purple-500/15 text-purple-400 border border-purple-500/30 hover:bg-purple-500/25"
-                  : "bg-purple-50 text-purple-600 border border-purple-200 hover:bg-purple-100"
-                : theme === "dark"
-                  ? "text-gray-400 hover:text-white hover:bg-white/5"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-            }`}
-            title={language === "en" ? (showRegionLabels ? "Hide Regions" : "Show Regions") : (showRegionLabels ? "Sembunyikan Wilayah" : "Tampilkan Wilayah")}
-          >
-            <Tag className="w-4.5 h-4.5" />
-          </button>
-        )}
-
-        {setShowRankingsOverlay && (
-          <button
-            onClick={() => setShowRankingsOverlay(prev => !prev)}
-            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
-              showRankingsOverlay
-                ? theme === "dark"
-                  ? "bg-violet-500/15 text-violet-400 border border-violet-500/30 hover:bg-violet-500/25"
-                  : "bg-violet-50 text-violet-600 border border-violet-200 hover:bg-violet-100"
-                : theme === "dark"
-                  ? "text-gray-400 hover:text-white hover:bg-white/5"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-            }`}
-            title={language === "en" ? "Rankings" : "Papan Peringkat"}
-          >
-            <TrendingUp className={`w-4.5 h-4.5 ${showRankingsOverlay ? "animate-pulse" : ""}`} />
-          </button>
         )}
       </div>
 
