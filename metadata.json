@@ -1,6 +1,8 @@
 {
   "name": "Peta Interaktif Indonesia",
   "description": "Landing page peta interaktif Indonesia dengan navigasi menu melayang dan asisten AI pendukung eksplorasi provinsi.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": [
+    "geolocation"
+  ],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

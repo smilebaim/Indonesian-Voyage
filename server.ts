@@ -282,6 +282,55 @@ Buatlah tanggapan yang menarik, profesional, dan praktis bagi wisatawan. Jangan 
     }
   });
 
+  // API Route: Get local news for a province using Search Grounding
+  app.post("/api/gemini/news", async (req, res) => {
+    const { province, lang } = req.body;
+    if (!province) {
+      return res.status(400).json({ error: "Province name is required" });
+    }
+
+    const isEn = lang === "en";
+    let prompt = "";
+    if (isEn) {
+      prompt = `Find the latest top 3 local news headlines or current events in ${province} Province, Indonesia. 
+Provide the response in a neat Markdown format, including the headline, a brief 1-2 sentence summary, and the source.`;
+    } else {
+      prompt = `Carikan 3 berita lokal terbaru atau peristiwa terkini di Provinsi ${province}, Indonesia.
+Berikan tanggapan dalam format Markdown yang rapi, termasuk judul berita, ringkasan singkat 1-2 kalimat, dan sumbernya.`;
+    }
+
+    if (!ai) {
+      return res.json({ 
+        text: isEn 
+          ? `*(AI integration is required to fetch real-time news for ${province}.)*`
+          : `*(Integrasi AI diperlukan untuk mengambil berita real-time untuk Provinsi ${province}.)*`, 
+        isOffline: true 
+      });
+    }
+
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3.5-flash",
+        contents: prompt,
+        config: {
+          tools: [{ googleSearch: {} }],
+        },
+      });
+
+      const text = response.text || (isEn ? "No news found." : "Tidak ada berita ditemukan.");
+      return res.json({ text, isOffline: false });
+    } catch (error: any) {
+      console.error("Gemini News API Error:", error);
+      return res.json({
+        text: isEn 
+          ? `*(Failed to fetch news due to connection issues)*`
+          : `*(Gagal mengambil berita karena kendala koneksi)*`,
+        isOffline: true,
+        error: error.message,
+      });
+    }
+  });
+
   // Vite middleware setup
   if (!isProd) {
     const vite = await createViteServer({

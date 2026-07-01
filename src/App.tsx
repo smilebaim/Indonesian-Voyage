@@ -36,7 +36,24 @@ import WeatherWidget from "./components/WeatherWidget";
 import ProvinceStats from "./components/ProvinceStats";
 import ProvinceHistory from "./components/ProvinceHistory";
 import ProvinceRanking from "./components/ProvinceRanking";
+import LocalNews from "./components/LocalNews";
 import { motion, AnimatePresence } from "motion/react";
+
+const tabContentVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05
+    }
+  }
+};
+
+const cascadeItemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+};
 
 export default function App() {
   // State management
@@ -732,19 +749,25 @@ export default function App() {
               
               {/* Tab: General Facts / Overview */}
               {activeTab === "overview" && (
-                <div className="space-y-5 animate-fadeIn">
+                <motion.div 
+                  key={`overview-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-5"
+                >
                   {/* General Description */}
-                  <p className={`text-xs sm:text-sm leading-relaxed font-light text-justify transition-colors ${theme === "dark" ? "text-gray-300" : "text-slate-600"}`}>
+                  <motion.p variants={cascadeItemVariants} className={`text-xs sm:text-sm leading-relaxed font-light text-justify transition-colors ${theme === "dark" ? "text-gray-300" : "text-slate-600"}`}>
                     {selectedProvince.description}
-                  </p>
+                  </motion.p>
 
                   {/* Real-time Weather Display */}
-                  <div>
+                  <motion.div variants={cascadeItemVariants}>
                     <WeatherWidget province={selectedProvince} language={language} theme={theme} />
-                  </div>
+                  </motion.div>
 
                   {/* Micro Quick Statistics Grid */}
-                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                  <motion.div variants={cascadeItemVariants} className="grid grid-cols-2 gap-2 sm:gap-3">
                     <div className={`backdrop-blur-md border p-2.5 sm:p-3 rounded-2xl transition-all duration-300 ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-white/10 border-white/20 shadow-[0_4px_12px_rgba(31,38,135,0.02)]"}`}>
                       <span className={`text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider block mb-0.5 ${theme === "dark" ? "text-gray-500" : "text-slate-400"}`}>
                         {language === "en" ? "Top Destinations" : "Destinasi Utama"}
@@ -761,12 +784,12 @@ export default function App() {
                         {selectedProvince.culture[0]}
                       </span>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Divider */}
-                  <div className={`border-t my-1 ${theme === "dark" ? "border-white/10" : "border-slate-200/80"}`} />
+                  <motion.div variants={cascadeItemVariants} className={`border-t my-1 ${theme === "dark" ? "border-white/10" : "border-slate-200/80"}`} />
 
-                  <div className="space-y-4">
+                  <motion.div variants={cascadeItemVariants} className="space-y-4">
                     <div className="flex items-center gap-2 mb-1">
                       <BookOpen className="w-4 h-4 text-blue-500" />
                       <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
@@ -784,31 +807,50 @@ export default function App() {
 
                     {/* Demographic & Geographic Index Visualization */}
                     <ProvinceStats province={selectedProvince} language={language} theme={theme} />
-                  </div>
-                </div>
+                  </motion.div>
+
+                  <motion.div variants={cascadeItemVariants}>
+                    <LocalNews provinceName={selectedProvince.name} language={language} theme={theme} />
+                  </motion.div>
+                </motion.div>
               )}
 
               {/* Tab: History Stepper */}
               {activeTab === "history" && (
-                <ProvinceHistory
-                  provinceId={selectedProvince.id}
-                  island={selectedProvince.island}
-                  provinceName={selectedProvince.name}
-                  language={language}
-                  theme={theme}
-                />
+                <motion.div
+                  key={`history-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.div variants={cascadeItemVariants}>
+                    <ProvinceHistory
+                      provinceId={selectedProvince.id}
+                      island={selectedProvince.island}
+                      provinceName={selectedProvince.name}
+                      language={language}
+                      theme={theme}
+                    />
+                  </motion.div>
+                </motion.div>
               )}
 
               {/* Tab: Culture Details */}
               {activeTab === "culture" && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="flex items-center gap-2 mb-1">
+                <motion.div 
+                  key={`culture-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-4"
+                >
+                  <motion.div variants={cascadeItemVariants} className="flex items-center gap-2 mb-1">
                     <Music className="w-4 h-4 text-amber-500" />
                     <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
                       {language === "en" ? "Cultural Arts & Noble Heritage" : "Seni Budaya & Warisan Luhur"}
                     </h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">                     {selectedProvince.culture.map((item, index) => (
+                  </motion.div>
+                  <motion.div variants={cascadeItemVariants} className="grid grid-cols-2 gap-3">                     {selectedProvince.culture.map((item, index) => (
                       <div key={index} className={`border p-3.5 rounded-2xl text-center flex flex-col items-center justify-center transition-colors ${theme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-white/60 hover:bg-white/80 border-slate-200/60 shadow-[0_2px_8px_rgba(31,38,135,0.02)]"}`}>
                         <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center mb-2">
                           <Music className="w-4 h-4 text-amber-500" />
@@ -823,8 +865,8 @@ export default function App() {
                         <span className={`text-sm font-semibold text-center line-clamp-2 transition-colors ${theme === "dark" ? "text-white" : "text-slate-800"}`}>{item}</span>
                       </div>
                     ))}
-                  </div>
-                  <div className={`p-4 rounded-2xl transition-all border ${theme === "dark" ? "bg-amber-950/10 border-amber-500/15" : "bg-amber-500/10 border-amber-500/20"}`}>
+                  </motion.div>
+                  <motion.div variants={cascadeItemVariants} className={`p-4 rounded-2xl transition-all border ${theme === "dark" ? "bg-amber-950/10 border-amber-500/15" : "bg-amber-500/10 border-amber-500/20"}`}>
                     <p className={`text-xs leading-relaxed flex gap-2 transition-all ${theme === "dark" ? "text-amber-300/90" : "text-amber-800"}`}>
                       <Volume2 className="w-4 h-4 shrink-0 mt-0.5" />
                       <span>
@@ -835,20 +877,26 @@ export default function App() {
                         )}
                       </span>
                     </p>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               )}
 
               {/* Tab: Tourism Attractions */}
               {activeTab === "tourism" && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="flex items-center gap-2 mb-1">
+                <motion.div 
+                  key={`tourism-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-4"
+                >
+                  <motion.div variants={cascadeItemVariants} className="flex items-center gap-2 mb-1">
                     <Palmtree className="w-4 h-4 text-emerald-500" />
                     <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
                       {language === "en" ? "Recommended Best Destinations" : "Rekomendasi Destinasi Terbaik"}
                     </h3>
-                  </div>
-                  <div className="space-y-2.5">
+                  </motion.div>
+                  <motion.div variants={cascadeItemVariants} className="space-y-2.5">
                     {selectedProvince.tourism.map((destination, index) => (
                       <div key={index} className={`flex items-center justify-between border p-3.5 rounded-2xl transition-all duration-300 ${theme === "dark" ? "bg-white/[0.02] hover:bg-white/[0.05] border-white/5" : "bg-white/60 hover:bg-white/80 border-slate-200/60 shadow-sm"}`}>
                         <div className="flex items-center gap-3">
@@ -867,20 +915,26 @@ export default function App() {
                         </span>
                       </div>
                     ))}
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               )}
 
               {/* Tab: Culinary Adventures */}
               {activeTab === "culinary" && (
-                <div className="space-y-4 animate-fadeIn">
-                  <div className="flex items-center gap-2 mb-1">
+                <motion.div 
+                  key={`culinary-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-4"
+                >
+                  <motion.div variants={cascadeItemVariants} className="flex items-center gap-2 mb-1">
                     <Utensils className="w-4 h-4 text-rose-500" />
                     <h3 className={`text-xs font-bold uppercase tracking-widest transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>
                       {language === "en" ? "Flavorful Traditional Culinary" : "Kuliner Tradisional Kaya Rasa"}
                     </h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
+                  </motion.div>
+                  <motion.div variants={cascadeItemVariants} className="grid grid-cols-2 gap-3">
                     {selectedProvince.culinary.map((food, index) => (
                       <div key={index} className={`border p-3.5 rounded-2xl flex flex-col justify-between transition-colors ${theme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-white/60 hover:bg-white/80 border-slate-200/60 shadow-[0_2px_8px_rgba(31,38,135,0.02)]"}`}>
                         <div className="w-8 h-8 rounded-full bg-rose-500/10 flex items-center justify-center mb-2">
@@ -894,8 +948,8 @@ export default function App() {
                         </div>
                       </div>
                     ))}
-                  </div>
-                  <div className={`p-4 rounded-2xl transition-all border ${theme === "dark" ? "bg-rose-950/10 border-rose-500/15" : "bg-rose-500/10 border-rose-500/20"}`}>
+                  </motion.div>
+                  <motion.div variants={cascadeItemVariants} className={`p-4 rounded-2xl transition-all border ${theme === "dark" ? "bg-rose-950/10 border-rose-500/15" : "bg-rose-500/10 border-rose-500/20"}`}>
                     <p className={`text-xs leading-relaxed transition-all ${theme === "dark" ? "text-rose-300/90" : "text-rose-800"}`}>
                       {language === "en" ? (
                         "Nusantara's signature spices produce rich and authentic culinary flavors, combining age-old traditions in every single bite."
@@ -903,14 +957,20 @@ export default function App() {
                         "Rempah khas Nusantara menghasilkan rasa kuliner yang kaya dan otentik, memadukan tradisi turun-temurun di setiap suapan."
                       )}
                     </p>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               )}
 
               {/* Tab: Gemini AI Smart Chat Integration */}
               {activeTab === "ai" && (
-                <div className="space-y-4 flex flex-col animate-fadeIn">
-                  <div>
+                <motion.div 
+                  key={`ai-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-4 flex flex-col"
+                >
+                  <motion.div variants={cascadeItemVariants}>
                     {/* Header */}
                     <div className={`p-3.5 rounded-2xl mb-4 border transition-colors ${theme === "dark" ? "bg-blue-950/20 border-blue-500/20 text-blue-400" : "bg-blue-50 border-blue-200 text-blue-800"}`}>
                       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider mb-1">
@@ -991,10 +1051,10 @@ export default function App() {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
 
                   {/* Custom AI Query Form Input */}
-                  <div className={`mt-4 pt-3 border-t flex gap-2 ${theme === "dark" ? "border-white/5" : "border-slate-100"}`}>
+                  <motion.div variants={cascadeItemVariants} className={`mt-4 pt-3 border-t flex gap-2 ${theme === "dark" ? "border-white/5" : "border-slate-100"}`}>
                     <input
                       type="text"
                       placeholder={
@@ -1035,14 +1095,20 @@ export default function App() {
                         <RefreshCw className="w-4 h-4" />
                       </button>
                     )}
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               )}
 
               {/* Tab: Itinerary AI Generator */}
               {activeTab === "itinerary" && (
-                <div className="space-y-4 flex flex-col animate-fadeIn">
-                  <div>
+                <motion.div 
+                  key={`itinerary-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-4 flex flex-col"
+                >
+                  <motion.div variants={cascadeItemVariants}>
                     {/* Header */}
                     <div className={`p-3.5 rounded-2xl mb-4 border transition-colors ${theme === "dark" ? "bg-emerald-950/20 border-emerald-500/20 text-emerald-400" : "bg-emerald-50 border-emerald-200 text-emerald-800"}`}>
                       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider mb-1">
@@ -1166,25 +1232,32 @@ export default function App() {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
 
                   {/* Manual trigger / regenerate button */}
                   {!itineraryLoading && (
-                    <button
+                    <motion.button
+                      variants={cascadeItemVariants}
                       onClick={() => generateItinerary(itineraryDays, itineraryPref)}
                       className="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/10"
                     >
                       <RefreshCw className="w-4 h-4" />
                       {language === "en" ? "Regenerate Travel Plan" : "Rancang Ulang Rencana Perjalanan"}
-                    </button>
+                    </motion.button>
                   )}
-                </div>
+                </motion.div>
               )}
 
               {/* Tab: Packing & Preparation Checklist AI */}
               {activeTab === "checklist" && (
-                <div className="space-y-4 flex flex-col animate-fadeIn">
-                  <div>
+                <motion.div 
+                  key={`checklist-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-4 flex flex-col"
+                >
+                  <motion.div variants={cascadeItemVariants}>
                     {/* Header Banner */}
                     <div className={`p-3.5 rounded-2xl mb-4 border transition-colors ${theme === "dark" ? "bg-indigo-950/20 border-indigo-500/20 text-indigo-400" : "bg-indigo-50 border-indigo-200 text-indigo-800"}`}>
                       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider mb-1">
@@ -1394,31 +1467,41 @@ export default function App() {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
 
                   {/* Manual trigger / reset button */}
                   {checklistResponse && !checklistLoading && (
-                    <button
+                    <motion.button
+                      variants={cascadeItemVariants}
                       onClick={() => generateChecklist(checklistActivities, customActivity)}
                       className="w-full bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/10 cursor-pointer"
                     >
                       <RefreshCw className="w-4 h-4" />
                       {language === "en" ? "Regenerate Checklist" : "Rancang Ulang Checklist"}
-                    </button>
+                    </motion.button>
                   )}
-                </div>
+                </motion.div>
               )}
 
               {/* Tab: Province Rankings & Metrics */}
               {activeTab === "ranking" && (
-                <ProvinceRanking
-                  selectedProvince={selectedProvince}
-                  onSelectProvince={(prov) => {
-                    setSelectedProvince(prov);
-                  }}
-                  language={language}
-                  theme={theme}
-                />
+                <motion.div
+                  key={`ranking-${selectedProvince.id}`}
+                  variants={tabContentVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.div variants={cascadeItemVariants}>
+                    <ProvinceRanking
+                      selectedProvince={selectedProvince}
+                      onSelectProvince={(prov) => {
+                        setSelectedProvince(prov);
+                      }}
+                      language={language}
+                      theme={theme}
+                    />
+                  </motion.div>
+                </motion.div>
               )}
 
             </div>

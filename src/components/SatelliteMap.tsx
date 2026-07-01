@@ -395,6 +395,34 @@ export default function SatelliteMap({
 
     mapRef.current = map;
 
+    // Request geolocation and fly to user location
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          if (mapRef.current) {
+            mapRef.current.flyTo([latitude, longitude], 8, { duration: 2.5, easeLinearity: 0.25 });
+            
+            // Add a simple pulse marker for user location
+            const userIcon = L.divIcon({
+              className: "custom-user-marker",
+              html: `<div class="relative flex items-center justify-center w-6 h-6">
+                       <div class="absolute w-full h-full bg-blue-500 rounded-full animate-ping opacity-75"></div>
+                       <div class="relative w-3 h-3 bg-blue-600 border-2 border-white rounded-full"></div>
+                     </div>`,
+              iconSize: [24, 24],
+              iconAnchor: [12, 12]
+            });
+            L.marker([latitude, longitude], { icon: userIcon, zIndexOffset: 1000 }).addTo(mapRef.current);
+          }
+        },
+        (error) => {
+          console.warn("Geolocation error:", error.message);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
     // Zoom controls are disabled for a cleaner fullscreen experience
 
 
