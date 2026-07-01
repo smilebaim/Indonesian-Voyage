@@ -28,7 +28,8 @@ import {
   GitCompare,
   BarChart3,
   Users,
-  Tag
+  Tag,
+  Info
 } from "lucide-react";
 import { PROVINCE_STATS_DATA } from "./ProvinceRanking";
 import { 
@@ -260,6 +261,7 @@ export default function SatelliteMap({
   const isFirstRender = useRef(true);
   const [mapType, setMapType] = useState<"satellite" | "dark" | "street" | "topo">("satellite");
   const [isPanning, setIsPanning] = useState(false);
+  const [isInfoMenuOpen, setIsInfoMenuOpen] = useState(false);
   const hasUserSelected = useRef(false);
   const initialProvinceIdRef = useRef(selectedProvince.id);
 
@@ -1083,86 +1085,115 @@ export default function SatelliteMap({
         </div>
       </div>
 
-      {/* MAP CONTROLLER SWITCHER overlays */}
-      <div className={`absolute left-3 top-1/2 -translate-y-1/2 md:left-4 z-[400] flex flex-col items-center gap-1 backdrop-blur-3xl p-1 rounded-xl border transition-all duration-300 ${
-        theme === "dark" 
-          ? "bg-black/10 border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]" 
-          : "bg-white/15 border-white/25 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"
-      }`}>
+      {/* MAP CONTROLLER SWITCHER overlays (collapsible into Info icon) */}
+      <div className={`absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-8 md:left-8 z-[400] flex flex-col-reverse items-start gap-2`}>
         <button
-          onClick={() => setMapType("satellite")}
-          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-            mapType === "satellite"
-              ? "bg-blue-600 text-white"
-              : (theme === "dark" ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100")
+          onClick={() => setIsInfoMenuOpen(prev => !prev)}
+          className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all shadow-lg backdrop-blur-xl border ${
+            isInfoMenuOpen
+              ? "bg-blue-600/80 text-white border-blue-400/50 hover:bg-blue-600/90"
+              : theme === "dark" 
+                ? "bg-white/10 border-white/20 text-gray-200 hover:text-white hover:bg-white/20" 
+                : "bg-white/40 border-white/50 text-slate-800 hover:text-slate-900 hover:bg-white/60"
           }`}
-          title={language === "en" ? "Satellite view" : "Tampilan Satelit"}
+          title={language === "en" ? "Map Info & Tools" : "Info & Alat Peta"}
         >
-          <Globe className="w-3.5 h-3.5" />
-        </button>
-        
-        <button
-          onClick={() => setMapType("topo")}
-          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-            mapType === "topo"
-              ? "bg-blue-600 text-white"
-              : (theme === "dark" ? "text-gray-400 hover:text-white hover:bg-white/5" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100")
-          }`}
-          title={language === "en" ? "Terrain view" : "Tampilan Terrain"}
-        >
-          <Compass className="w-3.5 h-3.5" />
+          <Info className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
-
-        <div className={`w-4 h-[1px] my-0.5 transition-colors duration-300 ${theme === "dark" ? "bg-white/10" : "bg-slate-200"}`} />
-
-        <button
-          onClick={() => {
-            setIsTourActive(prev => !prev);
-            setIsTourPlaying(true);
-          }}
-          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-            isTourActive
-              ? "bg-amber-500 text-black font-extrabold hover:bg-amber-400 shadow-sm"
-              : "text-amber-500 hover:text-amber-600 hover:bg-amber-500/10"
-          }`}
-          title={language === "en" ? "Virtual Tour" : "Tur Virtual"}
-        >
-          <Sparkles className={`w-3.5 h-3.5 ${isTourActive ? "animate-pulse" : ""}`} />
-        </button>
-
-        <button
-          onClick={zoomToFitIndonesia}
-          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-            theme === "dark" 
-              ? "text-blue-400 hover:text-blue-300 hover:bg-blue-500/10" 
-              : "text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-          }`}
-          title={language === "en" ? "Fit Entire Indonesia" : "Fokus Seluruh Indonesia"}
-        >
-          <Maximize2 className="w-3.5 h-3.5" />
-        </button>
-
-        {setShowMarkers && (
-          <>
-            <div className={`w-4 h-[1px] my-0.5 transition-colors duration-300 ${theme === "dark" ? "bg-white/10" : "bg-slate-200"}`} />
-            <button
-              onClick={() => setShowMarkers(prev => !prev)}
-              className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-                showMarkers
-                  ? theme === "dark"
-                    ? "bg-blue-500/15 text-blue-400 border border-blue-500/30 hover:bg-blue-500/25"
-                    : "bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100"
-                  : theme === "dark"
-                    ? "text-gray-400 hover:text-white hover:bg-white/5"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+        <AnimatePresence>
+          {isInfoMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className={`flex flex-col items-center gap-1 backdrop-blur-xl p-1.5 rounded-xl border transition-all duration-300 ${
+                theme === "dark" 
+                  ? "bg-white/10 border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]" 
+                  : "bg-white/40 border-white/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"
               }`}
-              title={language === "en" ? (showMarkers ? "Hide Markers" : "Show Markers") : (showMarkers ? "Sembunyikan Pin" : "Tampilkan Pin")}
             >
-              <MapPin className={`w-3.5 h-3.5 ${showMarkers ? "animate-pulse" : ""}`} />
-            </button>
-          </>
-        )}
+              <button
+                onClick={() => setMapType("satellite")}
+                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                  mapType === "satellite"
+                    ? "bg-blue-600 text-white"
+                    : (theme === "dark" ? "text-gray-400 hover:text-white hover:bg-white/10" : "text-slate-700 hover:text-slate-900 hover:bg-white/60")
+                }`}
+                title={language === "en" ? "Satellite view" : "Tampilan Satelit"}
+              >
+                <Globe className="w-4 h-4" />
+              </button>
+              
+              <button
+                onClick={() => setMapType("topo")}
+                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                  mapType === "topo"
+                    ? "bg-blue-600 text-white"
+                    : (theme === "dark" ? "text-gray-400 hover:text-white hover:bg-white/10" : "text-slate-700 hover:text-slate-900 hover:bg-white/60")
+                }`}
+                title={language === "en" ? "Terrain view" : "Tampilan Terrain"}
+              >
+                <Compass className="w-4 h-4" />
+              </button>
+
+              <div className={`w-5 h-[1px] my-1 transition-colors duration-300 ${theme === "dark" ? "bg-white/20" : "bg-slate-300/50"}`} />
+
+              <button
+                onClick={() => {
+                  setIsTourActive(prev => !prev);
+                  setIsTourPlaying(true);
+                  setIsInfoMenuOpen(false);
+                }}
+                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                  isTourActive
+                    ? "bg-amber-500 text-black font-extrabold hover:bg-amber-400 shadow-sm"
+                    : "text-amber-600 hover:text-amber-700 hover:bg-amber-500/20"
+                }`}
+                title={language === "en" ? "Virtual Tour" : "Tur Virtual"}
+              >
+                <Sparkles className={`w-4 h-4 ${isTourActive ? "animate-pulse" : ""}`} />
+              </button>
+
+              <button
+                onClick={() => {
+                  zoomToFitIndonesia();
+                  setIsInfoMenuOpen(false);
+                }}
+                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                  theme === "dark" 
+                    ? "text-blue-400 hover:text-blue-300 hover:bg-blue-500/20" 
+                    : "text-blue-600 hover:text-blue-700 hover:bg-blue-100"
+                }`}
+                title={language === "en" ? "Fit Entire Indonesia" : "Fokus Seluruh Indonesia"}
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+
+              {setShowMarkers && (
+                <>
+                  <div className={`w-5 h-[1px] my-1 transition-colors duration-300 ${theme === "dark" ? "bg-white/20" : "bg-slate-300/50"}`} />
+                  <button
+                    onClick={() => setShowMarkers(prev => !prev)}
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                      showMarkers
+                        ? theme === "dark"
+                          ? "bg-blue-500/20 text-blue-400 border border-blue-500/30 hover:bg-blue-500/30"
+                          : "bg-blue-100 text-blue-600 border border-blue-200 hover:bg-blue-200"
+                        : theme === "dark"
+                          ? "text-gray-400 hover:text-white hover:bg-white/10"
+                          : "text-slate-700 hover:text-slate-900 hover:bg-white/60"
+                    }`}
+                    title={language === "en" ? (showMarkers ? "Hide Markers" : "Show Markers") : (showMarkers ? "Sembunyikan Pin" : "Tampilkan Pin")}
+                  >
+                    <MapPin className={`w-4 h-4 ${showMarkers ? "animate-pulse" : ""}`} />
+                  </button>
+                </>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* CATEGORY MARKER FILTERS REMOVED */}

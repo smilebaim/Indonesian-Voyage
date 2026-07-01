@@ -1604,22 +1604,22 @@ export default function App() {
             {/* Interactive Leaflet Satellite Map Container */}
             <div className="relative z-10 w-full h-full flex-1">
               {/* HEADER / TOP FLOATING MENU (Floating on Upper Map) */}
-              <nav id="top-nav" className="absolute bottom-3 right-3 z-[401] transition-all duration-300">
-                <div className={`inline-flex backdrop-blur-3xl border rounded-full px-3 md:px-4.5 py-1.5 md:py-2 flex-row items-center justify-between gap-2.5 transition-all duration-300 ${
+              <nav id="top-nav" className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-[401] transition-all duration-300 max-w-[calc(100vw-2rem)] origin-bottom-right scale-90 sm:scale-100">
+                <div className={`inline-flex backdrop-blur-xl border rounded-full px-2.5 sm:px-3 md:px-4.5 py-1.5 md:py-2 flex-row items-center justify-between gap-2 md:gap-2.5 transition-all duration-300 ${
                   theme === "dark" 
-                    ? "bg-black/10 border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]" 
-                    : "bg-white/15 border-white/25 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"
+                    ? "bg-white/10 border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]" 
+                    : "bg-white/40 border-white/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"
                 }`}>
                   {/* Logo Brand */}
-                  <div className="flex items-center gap-2 cursor-pointer" onClick={() => setSelectedProvince(PROVINCES.find(p => p.id === "jakarta")!)}>
-                    <div className="w-7 h-7 bg-gradient-to-tr from-blue-600 to-emerald-500 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20 text-white font-black text-sm tracking-wider">
+                  <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer min-w-0" onClick={() => setSelectedProvince(PROVINCES.find(p => p.id === "jakarta")!)}>
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 shrink-0 bg-gradient-to-tr from-blue-600 to-emerald-500 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20 text-white font-black text-xs sm:text-sm tracking-wider">
                       I
                     </div>
-                    <div className="flex flex-col">
-                      <span className={`text-xs md:text-sm font-bold tracking-widest uppercase flex items-center gap-1 transition-colors ${theme === "dark" ? "text-white" : "text-slate-900"}`}>
-                        INDONESIAN<span className="text-blue-500 font-light">EXPLORER</span>
+                    <div className="flex flex-col min-w-0">
+                      <span className={`text-[10px] sm:text-xs md:text-sm font-bold tracking-widest uppercase flex items-center gap-0.5 sm:gap-1 transition-colors truncate ${theme === "dark" ? "text-white" : "text-slate-900"}`}>
+                        INDONESIAN<span className="text-blue-500 font-light truncate">EXPLORER</span>
                       </span>
-                      <span className={`text-[7px] md:text-[8px] uppercase tracking-widest font-mono transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>{language === "en" ? "INTERACTIVE MAP OF INDONESIA" : "PETA INTERAKTIF INDONESIA"}</span>
+                      <span className={`text-[5.5px] sm:text-[7px] md:text-[8px] uppercase tracking-widest font-mono transition-colors truncate ${theme === "dark" ? "text-gray-400" : "text-slate-500"}`}>{language === "en" ? "INTERACTIVE MAP OF INDONESIA" : "PETA INTERAKTIF INDONESIA"}</span>
                     </div>
                   </div>
 
@@ -1659,14 +1659,14 @@ export default function App() {
             </div>
 
             {/* Bottom Stats Banner (Floating Overlay) */}
-            <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-[400] transition-colors duration-300 pointer-events-none">
+            <div className="absolute top-2.5 sm:top-4 left-1/2 -translate-x-1/2 w-[95%] sm:w-auto max-w-[calc(100vw-2rem)] z-[400] transition-all duration-300 pointer-events-none scale-90 sm:scale-100 origin-top">
               {/* Live Indonesian Time Zones Indicators */}
-              <div className={`flex items-center gap-2.5 text-[10px] sm:text-xs font-mono py-1.5 px-3 md:px-3.5 rounded-full transition-colors border backdrop-blur-3xl shadow-2xl pointer-events-auto ${theme === "dark" ? "bg-black/65 border-white/10 text-gray-300" : "bg-white/15 border-white/25 text-slate-700 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"}`}>
-                <div className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-blue-500 animate-spin" style={{ animationDuration: '8s' }} />
-                  <span className="text-gray-400 uppercase text-[9px] hidden lg:inline">Time Zones:</span>
+              <div className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2.5 text-[9px] sm:text-[10px] md:text-xs font-mono py-1 sm:py-1.5 px-3 md:px-3.5 rounded-2xl sm:rounded-full transition-colors border backdrop-blur-xl shadow-2xl pointer-events-auto ${theme === "dark" ? "bg-white/10 border-white/20 text-gray-200" : "bg-white/40 border-white/50 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.06)]"}`}>
+                <div className="flex items-center gap-1 shrink-0">
+                  <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-500 animate-spin" style={{ animationDuration: '8s' }} />
+                  <span className="text-gray-400 uppercase text-[8px] sm:text-[9px] inline lg:inline">Time Zones</span>
                 </div>
-                <div className="flex gap-2 text-[10px] sm:text-xs">
+                <div className="flex gap-2 text-[9px] sm:text-[10px] md:text-xs">
                   <span className={`transition-colors ${theme === "dark" ? "text-gray-300" : "text-slate-600"}`}>WIB: <span className="text-blue-500 font-semibold">{getTimeString(7)}</span></span>
                   <span className="text-gray-500">|</span>
                   <span className={`transition-colors ${theme === "dark" ? "text-gray-300" : "text-slate-600"}`}>WITA: <span className="text-emerald-500 font-semibold">{getTimeString(8)}</span></span>
