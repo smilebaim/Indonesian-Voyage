@@ -37,7 +37,9 @@ import ProvinceStats from "./components/ProvinceStats";
 import ProvinceHistory from "./components/ProvinceHistory";
 import ProvinceRanking from "./components/ProvinceRanking";
 import LocalNews from "./components/LocalNews";
+import LocationPrompt from "./components/LocationPrompt";
 import { motion, AnimatePresence } from "motion/react";
+import { getProvinceLatLng } from "./data/coordinates";
 
 const tabContentVariants = {
   hidden: { opacity: 0 },
@@ -117,6 +119,53 @@ export default function App() {
 
   // Time state for Indonesian Timezones (WIB, WITA, WIT)
   const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Location Prompt state
+  const [showLocationPrompt, setShowLocationPrompt] = useState(() => {
+    return localStorage.getItem("locationPromptDismissed") !== "true";
+  });
+  const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
+
+  const handleAllowLocation = () => {
+    localStorage.setItem("locationPromptDismissed", "true");
+    setShowLocationPrompt(false);
+    
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ lat: latitude, lng: longitude });
+          
+          // Find nearest province
+          let nearestProv = PROVINCES[0];
+          let minDistance = Infinity;
+
+          PROVINCES.forEach(prov => {
+            const coords = getProvinceLatLng(prov.id);
+            const dLat = coords.lat - latitude;
+            const dLng = coords.lng - longitude;
+            const distance = Math.sqrt(dLat * dLat + dLng * dLng);
+            if (distance < minDistance) {
+              minDistance = distance;
+              nearestProv = prov;
+            }
+          });
+
+          // Focus map on this province
+          setSelectedProvince(nearestProv);
+        },
+        (error) => {
+          console.warn("Geolocation error:", error.message);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+  };
+
+  const handleDenyLocation = () => {
+    localStorage.setItem("locationPromptDismissed", "true");
+    setShowLocationPrompt(false);
+  };
 
   // Refs for navigation scrolling
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -476,6 +525,17 @@ export default function App() {
       transition={{ duration: 0.8, ease: "easeInOut" }}
     >
       
+      <AnimatePresence>
+        {showLocationPrompt && (
+          <LocationPrompt 
+            onAllow={handleAllowLocation}
+            onDeny={handleDenyLocation}
+            language={language}
+            theme={theme}
+          />
+        )}
+      </AnimatePresence>
+
       {/* BACKGROUND ATMOSPHERIC GLOWS */}
       {effectsEnabled && (
         <motion.div 
@@ -1706,6 +1766,7 @@ export default function App() {
                 setShowRegionLabels={setShowRegionLabels}
                 showRankingsOverlay={showRankingsOverlay}
                 setShowRankingsOverlay={setShowRankingsOverlay}
+                userLocation={userLocation}
               />
             </div>
 

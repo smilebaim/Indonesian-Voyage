@@ -206,6 +206,7 @@ interface SatelliteMapProps {
   setShowRegionLabels?: React.Dispatch<React.SetStateAction<boolean>>;
   showRankingsOverlay?: boolean;
   setShowRankingsOverlay?: React.Dispatch<React.SetStateAction<boolean>>;
+  userLocation?: { lat: number, lng: number } | null;
 }
 
 export default function SatelliteMap({
@@ -220,10 +221,12 @@ export default function SatelliteMap({
   setShowRegionLabels,
   showRankingsOverlay = false,
   setShowRankingsOverlay,
+  userLocation = null,
 }: SatelliteMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<Record<string, L.Marker>>({});
+  const userMarkerRef = useRef<L.Marker | null>(null);
   const isFirstRender = useRef(true);
   const [mapType, setMapType] = useState<"satellite" | "dark" | "street" | "topo">("satellite");
   const [isPanning, setIsPanning] = useState(false);
@@ -395,34 +398,6 @@ export default function SatelliteMap({
 
     mapRef.current = map;
 
-    // Request geolocation and fly to user location
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          if (mapRef.current) {
-            mapRef.current.flyTo([latitude, longitude], 8, { duration: 2.5, easeLinearity: 0.25 });
-            
-            // Add a simple pulse marker for user location
-            const userIcon = L.divIcon({
-              className: "custom-user-marker",
-              html: `<div class="relative flex items-center justify-center w-6 h-6">
-                       <div class="absolute w-full h-full bg-blue-500 rounded-full animate-ping opacity-75"></div>
-                       <div class="relative w-3 h-3 bg-blue-600 border-2 border-white rounded-full"></div>
-                     </div>`,
-              iconSize: [24, 24],
-              iconAnchor: [12, 12]
-            });
-            L.marker([latitude, longitude], { icon: userIcon, zIndexOffset: 1000 }).addTo(mapRef.current);
-          }
-        },
-        (error) => {
-          console.warn("Geolocation error:", error.message);
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
-    }
-
     // Zoom controls are disabled for a cleaner fullscreen experience
 
 
@@ -499,6 +474,44 @@ export default function SatelliteMap({
 
     activeLayerRef.current = newLayer;
   }, [mapType]);
+
+  // Handle User Location marker
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    if (userLocation) {
+      if (!userMarkerRef.current) {
+        const userIcon = L.divIcon({
+          className: "custom-user-marker",
+          html: `<div class="relative flex items-center justify-center w-6 h-6">
+                   <div class="absolute w-full h-full bg-blue-500 rounded-full animate-ping opacity-75"></div>
+                   <div class="relative w-3 h-3 bg-blue-600 border-2 border-white rounded-full"></div>
+                 </div>`,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12]
+        });
+        
+        userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { 
+          icon: userIcon, 
+          zIndexOffset: 1000 
+        }).addTo(map);
+        
+        // Add a tooltip for user location
+        userMarkerRef.current.bindTooltip(
+          language === "en" ? "You are here" : "Anda di sini",
+          {
+            permanent: true,
+            direction: "top",
+            className: "bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-full border border-white shadow-lg",
+            offset: [0, -10]
+          }
+        );
+      } else {
+        userMarkerRef.current.setLatLng([userLocation.lat, userLocation.lng]);
+      }
+    }
+  }, [userLocation, language]);
 
   // Update markers on the map when filteredProvinces, selectedProvince, activeFilter, markerFilterMode, isTourActive, or clusterTrigger changes
   useEffect(() => {
