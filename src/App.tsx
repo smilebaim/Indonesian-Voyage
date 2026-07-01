@@ -36,7 +36,6 @@ import WeatherWidget from "./components/WeatherWidget";
 import ProvinceStats from "./components/ProvinceStats";
 import ProvinceHistory from "./components/ProvinceHistory";
 import ProvinceRanking from "./components/ProvinceRanking";
-import LocalNews from "./components/LocalNews";
 import LocationPrompt from "./components/LocationPrompt";
 import { motion, AnimatePresence } from "motion/react";
 import { getProvinceLatLng } from "./data/coordinates";
@@ -867,10 +866,6 @@ export default function App() {
 
                     {/* Demographic & Geographic Index Visualization */}
                     <ProvinceStats province={selectedProvince} language={language} theme={theme} />
-                  </motion.div>
-
-                  <motion.div variants={cascadeItemVariants}>
-                    <LocalNews provinceName={selectedProvince.name} language={language} theme={theme} />
                   </motion.div>
                 </motion.div>
               )}

@@ -41,6 +41,36 @@ import {
   Legend 
 } from "recharts";
 
+// Helper to determine timezone based on island and province id
+const getProvinceTimezone = (province: Province) => {
+  if (province.island === "Sumatra" || province.island === "Jawa") return "WIB";
+  if (province.island === "Kalimantan") {
+    if (["kalbar", "kalteng"].includes(province.id)) return "WIB";
+    return "WITA";
+  }
+  if (province.island === "Sulawesi" || province.island === "NusaTenggaraBali") return "WITA";
+  if (province.island === "Maluku" || province.island === "Papua") return "WIT";
+  return "WIB";
+};
+
+const getTimezoneColor = (timezone: string) => {
+  switch (timezone) {
+    case "WIB": return "#3b82f6"; // Blue
+    case "WITA": return "#10b981"; // Emerald
+    case "WIT": return "#f59e0b"; // Amber
+    default: return "#3b82f6";
+  }
+};
+
+const getGeojsonStateName = (provinceName: string) => {
+  const mapping: Record<string, string> = {
+    "DKI Jakarta": "Jakarta Raya",
+    "DI Yogyakarta": "Yogyakarta",
+    "Bangka Belitung": "Bangka-Belitung"
+  };
+  return mapping[provinceName] || provinceName;
+};
+
 // Helper to generate a realistic real-time weather widget inside the tooltip
 const getProvinceWeatherHTML = (provinceId: string, island: string, color: string, isEn: boolean) => {
   const charSum = provinceId.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -262,6 +292,16 @@ export default function SatelliteMap({
   useEffect(() => {
     setInfoboxProvince(selectedProvince);
   }, [selectedProvince]);
+
+  const [geojsonData, setGeojsonData] = useState<any>(null);
+  const geojsonLayerRef = useRef<L.GeoJSON | null>(null);
+
+  useEffect(() => {
+    fetch('/indonesia.geojson')
+      .then(res => res.json())
+      .then(data => setGeojsonData(data))
+      .catch(err => console.error("Failed to load geojson", err));
+  }, []);
 
   const [scanActive, setScanActive] = useState(false);
 
@@ -531,294 +571,95 @@ export default function SatelliteMap({
     });
     markersRef.current = {};
 
-    if (!showMarkers) return;
-
-    // Split filteredProvinces into selectedProvince (which should ALWAYS remain a high-visibility, unclustered individual marker) and others
-    const selectedInFiltered = filteredProvinces.find(p => p.id === selectedProvince.id);
-    const provincesToCluster = filteredProvinces.filter(p => p.id !== selectedProvince.id);
-
-    // List of nodes to be rendered on the map
-    const itemsToRender: (
-      | { type: "individual"; province: Province }
-      | { type: "cluster"; id: string; lat: number; lng: number; provinces: Province[] }
-    )[] = [];
-
-    // Guarantee that the selected active province is rendered individually so the user can always see it
-    if (selectedInFiltered) {
-      itemsToRender.push({ type: "individual", province: selectedInFiltered });
+    if (geojsonLayerRef.current && map.hasLayer(geojsonLayerRef.current)) {
+      map.removeLayer(geojsonLayerRef.current);
     }
 
-    // Interactive cluster buckets based on current projected screen-pixel coordinates
-    const clusters: { id: string; lat: number; lng: number; provinces: Province[] }[] = [];
-    const CLUSTER_RADIUS_PX = 60; // Cluster grouping threshold in pixels
+    if (!showMarkers) return;
 
-    provincesToCluster.forEach((province) => {
-      const coords = getProvinceLatLng(province.id);
-      const matchesFilter = isTourActive || isProvinceInFilter(province, activeFilter);
-
-      // Skip rendering if filtered out in "hide" mode
-      if (!matchesFilter && markerFilterMode === "hide") {
-        return;
-      }
-
-      let pt: L.Point | null = null;
-      try {
-        pt = map.latLngToContainerPoint([coords.lat, coords.lng]);
-      } catch (e) {
-        // Fallback if container size projection isn't initialized yet
-      }
-
-      let addedToCluster = false;
-      if (pt) {
-        for (const cluster of clusters) {
-          try {
-            const clusterPt = map.latLngToContainerPoint([cluster.lat, cluster.lng]);
-            if (pt.distanceTo(clusterPt) < CLUSTER_RADIUS_PX) {
-              cluster.provinces.push(province);
-              // Calculate new rolling centroid coordinates
-              const len = cluster.provinces.length;
-              cluster.lat = (cluster.lat * (len - 1) + coords.lat) / len;
-              cluster.lng = (cluster.lng * (len - 1) + coords.lng) / len;
-              addedToCluster = true;
-              break;
+    if (geojsonData) {
+      const geojsonLayer = L.geoJSON(geojsonData, {
+        style: (feature: any) => {
+          const stateName = feature.properties.state.toLowerCase();
+          let matchedProv = filteredProvinces.find(p => getGeojsonStateName(p.name).toLowerCase() === stateName);
+          
+          if (!matchedProv) {
+            if (stateName === 'papua') {
+              matchedProv = filteredProvinces.find(p => ['papua', 'papteng', 'papsel', 'pappeg'].includes(p.id));
+            } else if (stateName === 'papua barat') {
+              matchedProv = filteredProvinces.find(p => ['pabar', 'pabarda'].includes(p.id));
             }
-          } catch (e) {
-            // Fallback
           }
-        }
-      }
 
-      if (!addedToCluster) {
-        clusters.push({
-          id: province.id,
-          lat: coords.lat,
-          lng: coords.lng,
-          provinces: [province],
-        });
-      }
-    });
+          if (!matchedProv) {
+            return {
+              color: '#ffffff',
+              weight: 1,
+              opacity: 0.1,
+              fillOpacity: 0.05
+            };
+          }
 
-    // Distribute clusters with multiple items, and promote single-item clusters to standard markers
-    clusters.forEach((cluster) => {
-      if (cluster.provinces.length > 1) {
-        itemsToRender.push({
-          type: "cluster",
-          id: cluster.id,
-          lat: cluster.lat,
-          lng: cluster.lng,
-          provinces: cluster.provinces,
-        });
-      } else if (cluster.provinces.length === 1) {
-        itemsToRender.push({
-          type: "individual",
-          province: cluster.provinces[0],
-        });
-      }
-    });
+          const isSelected = matchedProv.id === selectedProvince.id || 
+            (selectedProvince.id.startsWith('pap') && (
+              (stateName === 'papua' && ['papua', 'papteng', 'papsel', 'pappeg'].includes(selectedProvince.id)) || 
+              (stateName === 'papua barat' && ['pabar', 'pabarda'].includes(selectedProvince.id))
+            ));
 
-    // Draw all items to the map
-    itemsToRender.forEach((item) => {
-      if (item.type === "individual") {
-        const province = item.province;
-        const coords = getProvinceLatLng(province.id);
-        const isSelected = province.id === selectedProvince.id;
-        const matchesFilter = isTourActive || isProvinceInFilter(province, activeFilter);
+          const matchesFilter = isTourActive || isProvinceInFilter(matchedProv, activeFilter);
+          
+          if (!matchesFilter && markerFilterMode === "hide") {
+            return { opacity: 0, fillOpacity: 0 };
+          }
 
-        const opacityClass = matchesFilter ? "opacity-100" : "opacity-30 scale-90";
-        const hoverEffect = "";
+          const timezone = getProvinceTimezone(matchedProv);
+          const markerColor = getTimezoneColor(timezone);
 
-        // Create beautiful premium custom HTML marker with color coding and opacity rules
-        const markerHtml = `
-          <div class="relative flex items-center justify-center pointer-events-none transition-all duration-300 ${opacityClass}" style="width: 40px; height: 40px;">
-            ${
-              isSelected && matchesFilter
-                ? `
-              <div class="absolute inset-0 rounded-full animate-ping opacity-70" style="background-color: ${province.color}; margin: 2px;"></div>
-              <div class="absolute inset-2 rounded-full animate-pulse opacity-40" style="background-color: ${province.color};"></div>
-              `
-                : ""
+          return {
+            color: isSelected ? '#ffffff' : markerColor,
+            weight: isSelected ? 3 : 1.5,
+            opacity: matchesFilter ? (isSelected ? 1 : 0.8) : 0.2,
+            fillColor: markerColor,
+            fillOpacity: matchesFilter ? (isSelected ? 0.4 : 0.15) : 0.05,
+            className: 'transition-all duration-300 outline-none cursor-pointer'
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          layer.on('click', () => {
+            const stateName = feature.properties.state.toLowerCase();
+            let matchedProv = filteredProvinces.find(p => getGeojsonStateName(p.name).toLowerCase() === stateName);
+            
+            if (!matchedProv) {
+              if (stateName === 'papua') {
+                matchedProv = filteredProvinces.find(p => p.id === 'papua');
+              } else if (stateName === 'papua barat') {
+                matchedProv = filteredProvinces.find(p => p.id === 'pabar');
+              }
             }
-            <div class="absolute rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
-              isSelected
-                ? "w-5 h-5 bg-white border-white scale-125 shadow-[0_0_12px_rgba(255,255,255,1)]"
-                : `w-4 h-4 bg-black/80 border-opacity-80 scale-100 ${hoverEffect}`
-            }" style="border-color: ${province.color}">
-              <div class="rounded-full ${
-                isSelected ? "w-2.5 h-2.5 bg-black" : "w-2 h-2"
-              }" style="${!isSelected ? `background-color: ${province.color}` : ""}"></div>
-            </div>
-          </div>
-        `;
 
-        const customIcon = L.divIcon({
-          html: markerHtml,
-          className: "custom-leaflet-marker",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-        });
-
-        const marker = L.marker([coords.lat, coords.lng], { 
-          icon: customIcon,
-          opacity: matchesFilter ? 1.0 : 0.35 
-        })
-          .addTo(map)
-          .on("click", () => {
-            hasUserSelected.current = true;
-            onSelectProvince(province);
-            setInfoboxProvince(province);
+            if (matchedProv) {
+              hasUserSelected.current = true;
+              onSelectProvince(matchedProv);
+              setInfoboxProvince(matchedProv);
+            }
           });
 
-        // Bind interactive tooltip with rich additional information from the left panel
-        const tooltipContent = `
-          <div class="p-3.5 bg-slate-950/98 text-white border border-white/10 rounded-2xl text-[10px] font-sans w-[350px] shadow-2xl space-y-2.5 pointer-events-none animate-fadeIn">
-            <!-- Header with name and region -->
-            <div class="flex items-center justify-between border-b border-white/10 pb-2">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full animate-pulse" style="background-color: ${province.color}; box-shadow: 0 0 8px ${province.color};"></span>
-                <span class="font-extrabold text-xs tracking-tight text-white">${province.name}</span>
-              </div>
-              <span class="text-[8px] uppercase font-mono tracking-widest bg-white/5 border border-white/15 px-1.5 py-0.5 rounded text-gray-300">
-                ${province.island === "NusaTenggaraBali" ? "Bali & Nusa Tenggara" : province.island}
-              </span>
-            </div>
-
-            <!-- Capital and Coords -->
-            <div class="text-[9px] text-gray-400 flex items-center justify-between">
-              <span>${language === "en" ? "Capital" : "Ibu Kota"}: <strong class="text-white">${province.capital}</strong></span>
-              <span class="text-[8px] font-mono text-gray-500">${province.coords.x}° E, ${province.coords.y}° S</span>
-            </div>
-
-            <!-- Description -->
-            <p class="text-[9.5px] text-gray-300 leading-relaxed italic border-l-2 pl-2" style="border-color: ${province.color}">
-              "${province.description}"
-            </p>
-
-            <!-- Weather Display -->
-            ${getProvinceWeatherHTML(province.id, province.island, province.color, language === "en")}
-
-            <!-- Stats Progress Indicators -->
-            ${getProvinceStatsCompactHTML(province.id, province.island, language === "en")}
-
-            <!-- Key Facts & History -->
-            <div class="space-y-1 pt-2.5 border-t border-white/10">
-              <span class="font-bold text-[8px] text-blue-400 uppercase tracking-wider block">💡 ${language === "en" ? "Key Facts & History:" : "Fakta Menarik & Sejarah:"}</span>
-              <ul class="list-disc pl-3 text-[9px] text-gray-300 space-y-0.5">
-                ${province.facts.map(fact => `<li>${fact}</li>`).join('')}
-              </ul>
-            </div>
-
-            <!-- Detailed Recommendations Section -->
-            <div class="space-y-2 pt-2.5 border-t border-white/10 text-[9px]">
-              <div>
-                <span class="font-bold text-emerald-400 uppercase tracking-wider block text-[8px]">📍 ${language === "en" ? "Top Destinations:" : "Destinasi Wisata Utama:"}</span>
-                ${getBadgesHTML(province.tourism, "#10b981")}
-              </div>
-              <div>
-                <span class="font-bold text-amber-400 uppercase tracking-wider block text-[8px]">🕌 ${language === "en" ? "Cultural Heritages:" : "Seni Budaya & Warisan:"}</span>
-                ${getBadgesHTML(province.culture, "#f59e0b")}
-              </div>
-              <div>
-                <span class="font-bold text-rose-400 uppercase tracking-wider block text-[8px]">🍜 ${language === "en" ? "Culinary Specialties:" : "Kuliner Khas Daerah:"}</span>
-                ${getBadgesHTML(province.culinary, "#f43f5e")}
-              </div>
-            </div>
-          </div>
-        `;
-
-        // marker.bindTooltip(tooltipContent, {
-        //   direction: "right",
-        //   offset: [15, 0],
-        //   opacity: 0.95,
-        //   className: "custom-tooltip-wrapper",
-        // });
-
-        markersRef.current[province.id] = marker;
-      } else {
-        // Render Cluster Marker!
-        const cluster = item;
-        const dominantColor = cluster.provinces[0].color;
-        
-        // Custom HTML for Cluster Marker with glassmorphism + dominant glow effects
-        const clusterHtml = `
-          <div class="relative flex items-center justify-center pointer-events-none transition-all duration-300" style="width: 50px; height: 50px;">
-            <!-- Double outer glowing pulsing rings representing area group -->
-            <div class="absolute inset-0 rounded-full animate-ping opacity-25" style="background-color: ${dominantColor}; margin: 4px;"></div>
-            <div class="absolute inset-2 rounded-full animate-pulse opacity-15" style="background-color: ${dominantColor};"></div>
-            
-            <!-- Glassmorphic central bubble -->
-            <div class="absolute w-9 h-9 rounded-full border-2 flex items-center justify-center text-[10.5px] font-extrabold tracking-tighter shadow-2xl transition-all duration-300" 
-                 style="border-color: ${dominantColor}; background: ${theme === 'dark' ? 'rgba(15,23,42,0.92)' : 'rgba(255,255,255,0.95)'}; color: ${theme === 'dark' ? '#f8fafc' : '#0f172a'}; box-shadow: 0 0 14px ${dominantColor}40">
-              ${cluster.provinces.length}
-            </div>
-          </div>
-        `;
-
-        const clusterIcon = L.divIcon({
-          html: clusterHtml,
-          className: "custom-leaflet-cluster-marker",
-          iconSize: [50, 50],
-          iconAnchor: [25, 25],
-        });
-
-        const marker = L.marker([cluster.lat, cluster.lng], {
-          icon: clusterIcon,
-        })
-          .addTo(map)
-          .on("click", () => {
-            // Smoothly fly to bounds containing all the provinces in this cluster
-            const bounds = L.latLngBounds(cluster.provinces.map(p => {
-              const c = getProvinceLatLng(p.id);
-              return L.latLng(c.lat, c.lng);
-            }));
-            map.flyToBounds(bounds, { padding: [50, 50], duration: 1.2 });
+          layer.on('mouseover', (e: any) => {
+            const l = e.target;
+            l.setStyle({ fillOpacity: 0.6 });
           });
 
-        // Rich Tooltip content for Cluster showing containing provinces
-        const tooltipContent = `
-          <div class="p-3 bg-slate-950/98 text-white border border-white/10 rounded-2xl text-[10px] font-sans w-[240px] shadow-2xl space-y-2 pointer-events-none animate-fadeIn">
-            <div class="flex items-center justify-between border-b border-white/10 pb-1.5">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse" style="box-shadow: 0 0 8px #3b82f6;"></span>
-                <span class="font-extrabold text-xs tracking-tight text-white">
-                  ${language === "en" ? `${cluster.provinces.length} Provinces` : `${cluster.provinces.length} Provinsi`}
-                </span>
-              </div>
-              <span class="text-[8px] uppercase font-mono tracking-widest bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded text-blue-400">
-                Cluster
-              </span>
-            </div>
-            
-            <ul class="space-y-1.5 max-h-[150px] overflow-y-auto pr-1">
-              ${cluster.provinces.map(p => `
-                <li class="flex items-center justify-between text-[9px] text-gray-300">
-                  <div class="flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${p.color}"></span>
-                    <span class="font-medium">${p.name}</span>
-                  </div>
-                  <span class="text-[8px] text-gray-500 font-mono">${p.capital}</span>
-                </li>
-              `).join('')}
-            </ul>
-            
-            <div class="text-[8px] text-blue-400 font-bold border-t border-white/5 pt-1.5 text-center flex items-center justify-center gap-1">
-              <span>🔍</span>
-              <span>${language === "en" ? "CLICK TO ZOOM IN" : "KLIK UNTUK MEMPERBESAR"}</span>
-            </div>
-          </div>
-        `;
+          layer.on('mouseout', (e: any) => {
+            geojsonLayer.resetStyle(e.target);
+          });
+        }
+      });
 
-        // marker.bindTooltip(tooltipContent, {
-        //   direction: "right",
-        //   offset: [15, 0],
-        //   opacity: 0.95,
-        //   className: "custom-tooltip-wrapper",
-        // });
+      geojsonLayer.addTo(map);
+      geojsonLayerRef.current = geojsonLayer;
+    }
 
-        // Store first province's ID as the key for clean tracking
-        markersRef.current[cluster.id] = marker;
-      }
-    });
-  }, [filteredProvinces, selectedProvince.id, language, showMarkers, activeFilter, markerFilterMode, isTourActive, clusterTrigger]);
+  }, [filteredProvinces, selectedProvince.id, language, showMarkers, activeFilter, markerFilterMode, isTourActive, geojsonData]);
 
   // Handle auto-panning / zooming (flyTo) to the selected province with smooth dynamic curves
   useEffect(() => {
@@ -842,11 +683,51 @@ export default function SatelliteMap({
       // Scale duration between 1.1s (nearby) and 2.4s (across the whole country)
       const duration = Math.min(2.4, Math.max(1.1, 1.1 + (distance / 25) * 1.3));
 
-      map.flyTo([coords.lat, coords.lng], zoomLevel, {
-        animate: true,
-        duration: duration,
-        easeLinearity: 0.18, // Curved easing for a premium fluid swoop
-      });
+      let targetBounds: L.LatLngBounds | null = null;
+      if (geojsonLayerRef.current) {
+        geojsonLayerRef.current.eachLayer((layer: any) => {
+          if (layer.feature && layer.feature.properties && layer.feature.properties.state) {
+            const stateName = layer.feature.properties.state.toLowerCase();
+            
+            let matchedProv = filteredProvinces.find(p => getGeojsonStateName(p.name).toLowerCase() === stateName);
+            
+            if (!matchedProv) {
+              if (stateName === 'papua') {
+                matchedProv = filteredProvinces.find(p => ['papua', 'papteng', 'papsel', 'pappeg'].includes(p.id));
+              } else if (stateName === 'papua barat') {
+                matchedProv = filteredProvinces.find(p => ['pabar', 'pabarda'].includes(p.id));
+              }
+            }
+  
+            if (matchedProv && matchedProv.id === selectedProvince.id) {
+               targetBounds = layer.getBounds();
+            } else if (
+               selectedProvince.id.startsWith('pap') && (
+                 (stateName === 'papua' && ['papua', 'papteng', 'papsel', 'pappeg'].includes(selectedProvince.id)) || 
+                 (stateName === 'papua barat' && ['pabar', 'pabarda'].includes(selectedProvince.id))
+               )
+            ) {
+               targetBounds = layer.getBounds();
+            }
+          }
+        });
+      }
+
+      if (targetBounds) {
+        map.flyToBounds(targetBounds, {
+          padding: [50, 50],
+          maxZoom: 8,
+          animate: true,
+          duration: duration,
+          easeLinearity: 0.18
+        });
+      } else {
+        map.flyTo([coords.lat, coords.lng], zoomLevel, {
+          animate: true,
+          duration: duration,
+          easeLinearity: 0.18, // Curved easing for a premium fluid swoop
+        });
+      }
     }
 
     // Automatically open the tooltip of the selected province safely (except on initial load until a user selection occurs)
@@ -1088,11 +969,51 @@ export default function SatelliteMap({
 
     map.closePopup();
 
-    map.flyTo([coords.lat, coords.lng], zoomLevel, {
-      animate: true,
-      duration: 1.5,
-      easeLinearity: 0.18,
-    });
+    let targetBounds: L.LatLngBounds | null = null;
+    if (geojsonLayerRef.current) {
+      geojsonLayerRef.current.eachLayer((layer: any) => {
+        if (layer.feature && layer.feature.properties && layer.feature.properties.state) {
+          const stateName = layer.feature.properties.state.toLowerCase();
+          
+          let matchedProv = filteredProvinces.find(p => getGeojsonStateName(p.name).toLowerCase() === stateName);
+          
+          if (!matchedProv) {
+            if (stateName === 'papua') {
+              matchedProv = filteredProvinces.find(p => ['papua', 'papteng', 'papsel', 'pappeg'].includes(p.id));
+            } else if (stateName === 'papua barat') {
+              matchedProv = filteredProvinces.find(p => ['pabar', 'pabarda'].includes(p.id));
+            }
+          }
+
+          if (matchedProv && matchedProv.id === selectedProvince.id) {
+             targetBounds = layer.getBounds();
+          } else if (
+             selectedProvince.id.startsWith('pap') && (
+               (stateName === 'papua' && ['papua', 'papteng', 'papsel', 'pappeg'].includes(selectedProvince.id)) || 
+               (stateName === 'papua barat' && ['pabar', 'pabarda'].includes(selectedProvince.id))
+             )
+          ) {
+             targetBounds = layer.getBounds();
+          }
+        }
+      });
+    }
+
+    if (targetBounds) {
+      map.flyToBounds(targetBounds, {
+        padding: [50, 50],
+        maxZoom: 8,
+        animate: true,
+        duration: 1.5,
+        easeLinearity: 0.18
+      });
+    } else {
+      map.flyTo([coords.lat, coords.lng], zoomLevel, {
+        animate: true,
+        duration: 1.5,
+        easeLinearity: 0.18,
+      });
+    }
 
     // Also try to open its tooltip after a delay
     const marker = markersRef.current[selectedProvince.id];
