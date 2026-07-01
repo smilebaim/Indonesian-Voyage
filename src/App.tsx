@@ -534,7 +534,7 @@ export default function App() {
             
             
             {/* Background Accent Initials */}
-            <div className={`absolute right-[-20px] top-[-10px] text-[150px] font-black select-none uppercase pointer-events-none font-mono transition-colors ${theme === "dark" ? "text-white/[0.02]" : "text-slate-900/[0.02]"}`}>
+            <div className={`absolute right-[-10px] top-[-5px] sm:right-[-20px] sm:top-[-10px] text-[30px] sm:text-[60px] font-black select-none uppercase pointer-events-none font-mono transition-colors ${theme === "dark" ? "text-white/[0.02]" : "text-slate-900/[0.02]"}`}>
               {selectedProvince.name.substring(0, 2)}
             </div>
 
@@ -586,7 +586,7 @@ export default function App() {
           {/* Interactive Information & AI Explorer Portal */}
           <div id="info-explorer" className="flex-1 flex flex-col min-h-0 overflow-hidden">
             {/* Inner Tabs for exploring details */}
-            <div className={`relative flex items-center shrink-0 border-b transition-all duration-300 ${theme === "dark" ? "border-white/10 bg-white/5" : "border-white/20 bg-white/10"}`}>
+            <div className={`relative w-full flex justify-between items-center shrink-0 border-b transition-all duration-300 ${theme === "dark" ? "border-white/10 bg-white/5" : "border-white/20 bg-white/10"}`}>
               {/* Modern Glassmorphism Left Scroll button with fading gradient */}
               <div className={`absolute left-0 top-0 bottom-0 z-10 w-14 flex items-center justify-start pl-2.5 pointer-events-none bg-gradient-to-r ${
                 theme === "dark" ? "from-slate-950/90 via-slate-950/40 to-transparent" : "from-white/90 via-white/40 to-transparent"
@@ -606,7 +606,7 @@ export default function App() {
 
               <div 
                 ref={tabsContainerRef}
-                className="flex-1 flex p-1 sm:p-1.5 px-11 gap-1 overflow-x-auto scrollbar-none scroll-smooth"
+                className="flex-1 flex p-1 sm:p-1.5 px-11 gap-1 overflow-x-auto scrollbar-none scroll-smooth w-full justify-between"
               >
                 <button
                   onClick={() => handleTabChange("overview")}
@@ -734,7 +734,7 @@ export default function App() {
               {activeTab === "overview" && (
                 <div className="space-y-5 animate-fadeIn">
                   {/* General Description */}
-                  <p className={`text-xs sm:text-sm leading-relaxed font-light transition-colors ${theme === "dark" ? "text-gray-300" : "text-slate-600"}`}>
+                  <p className={`text-xs sm:text-sm leading-relaxed font-light text-justify transition-colors ${theme === "dark" ? "text-gray-300" : "text-slate-600"}`}>
                     {selectedProvince.description}
                   </p>
 
@@ -1574,19 +1574,19 @@ export default function App() {
                       )}
                     </div>
 
-                    <div className="relative w-24 sm:w-32 md:w-36">
-                      <Search className={`absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-400"}`} />
+                    <div className="relative flex justify-end">
+                      <Search className={`absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none z-10 transition-colors ${theme === "dark" ? "text-gray-400" : "text-slate-400"}`} />
                       <input
                         type="text"
                         placeholder={language === "en" ? "Search..." : "Cari..."}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className={`w-full pl-7.5 pr-3 py-1 rounded-full text-[11px] transition-all duration-300 focus:outline-none focus:border-blue-500 ${theme === "dark" ? "bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:bg-white/10" : "bg-transparent border border-slate-200 text-slate-800 placeholder-slate-400 focus:bg-transparent"}`}
+                        className={`pl-7 sm:pl-7.5 pr-3 py-1.5 sm:py-1 rounded-full text-[11px] transition-all duration-300 focus:outline-none focus:border-blue-500 cursor-pointer focus:cursor-text ${searchQuery ? "w-32 sm:w-28 md:w-36" : "w-8 focus:w-32 sm:w-28 sm:focus:w-28 md:w-36 md:focus:w-36"} ${theme === "dark" ? "bg-white/10 sm:bg-white/5 border border-white/10 text-white placeholder-transparent sm:placeholder-gray-500 focus:placeholder-gray-500 focus:bg-white/10" : "bg-white/60 sm:bg-transparent border border-slate-200 text-slate-800 placeholder-transparent sm:placeholder-slate-400 focus:placeholder-slate-400 focus:bg-white/90 sm:focus:bg-transparent"}`}
                       />
                       {searchQuery && (
                         <button 
                           onClick={() => setSearchQuery("")} 
-                          className={`absolute right-2.5 top-1/2 -translate-y-1/2 transition-colors ${theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-400 hover:text-slate-700"}`}
+                          className={`absolute right-2.5 top-1/2 -translate-y-1/2 z-10 transition-colors ${theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-400 hover:text-slate-700"}`}
                         >
                           <X className="w-3 h-3" />
                         </button>
